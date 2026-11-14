@@ -17,4 +17,5 @@ public interface GameModel {
 	boolean validZombieName(String zombieName);////si nombre del zombie correcto
 	boolean hasGameFinished();
     boolean playerQuits();
+    boolean catchObject(Position p);
 }

@@ -23,6 +23,8 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	private Random rand;
 	private int numCycle;
 	private int suncoins;
+	private int generatedCoins;
+	private int caughtCoins;
 	private int remainingZombies;
 	
 	private GameObjectContainer container;
@@ -96,18 +98,6 @@ public class Game implements GameStatus, GameWorld, GameModel {
             return addGameObject(plant);
         }
         
-        /* Creo que no hace falta
-        
-        // comprobamos si objectName coincide con alguno de los nombres de los zombies disponibles
-        Zombies zombie = ZombieFactory.spawnZombie(objectName, this, p);
-        
-        // si nos devuelve null entonces el objectName no corresponde al de un zombie
-        if (zombie != null) {
-        	return addGameObject(zombie);
-        }
-        
-        */
-        
         return false;
     }
     
@@ -140,14 +130,14 @@ public class Game implements GameStatus, GameWorld, GameModel {
     	}
     	
     	container.add(gameObject);
+    	gameObject.onEnter();
+    	
     	return true;
     }
 
     @Override
-    public void addSuncoins() {
-        if (sunManager.addSun()) {
-        	suncoins += Sun.SUNCOINS;
-        }
+    public void addSuncoins(int coins) {
+        suncoins += coins;
     }
 
     @Override
@@ -219,12 +209,12 @@ public class Game implements GameStatus, GameWorld, GameModel {
 
     @Override
     public boolean hasGameFinished() {
-        return playerQuits || playerWins() || container.doZombieReachTheHouse();
+        return playerQuits || playerWins() || container.doZombieReachedTheHouse();
     }
     
     @Override
-    public boolean doZombiesReachTheHouse() {
-    	return container.doZombieReachTheHouse();
+    public boolean doZombiesReachedTheHouse() {
+    	return container.doZombieReachedTheHouse();
     }
     
     @Override
@@ -233,5 +223,40 @@ public class Game implements GameStatus, GameWorld, GameModel {
     	int randomCol = rand.nextInt(NUM_COLS);
     	
     	return new Position(randomRow, randomCol);
+    }
+    
+    @Override
+    public int getGeneratedCoins() {
+    	return generatedCoins;
+    }
+    
+    @Override
+    public int getCaughtCoins() {
+    	return caughtCoins;
+    }
+    
+    @Override
+    public void generateSun() {
+    	Position spawnPos = randomPosition();
+		
+		Sun newSun = new Sun(spawnPos, this);
+		
+		if (addGameObject(newSun)) {
+			generatedCoins++;
+		}
+    }
+    
+    @Override
+    public boolean catchObject(Position p) {
+    	GameItem objectInPosition = container.getGameItemInPosition(p);
+    	
+    	boolean catched = objectInPosition.catchObject();
+    	
+    	if (catched) {
+    		caughtCoins++;
+    		container.removeDead();
+    	}
+    	
+    	return catched;
     }
 }

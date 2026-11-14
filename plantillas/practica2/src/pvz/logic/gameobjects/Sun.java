@@ -6,7 +6,7 @@ import pvz.view.Messages;
 
 public class Sun extends GameObject {
 	public static final int SUNCOINS = 10;
-	public static final int ENDURANCE =  10;
+	public static final int ENDURANCE =  11;
 	
 	private int endurance;
 	
@@ -61,5 +61,20 @@ public class Sun extends GameObject {
 		if (isAlive()) {
 			endurance--;
 		}
+	}
+	
+	@Override
+	public boolean canShareCell() {
+		return true;
+	}
+	
+	@Override
+	public boolean canBeSpawnedAt(Position p) {
+		return game.isInsideBoard(p);
+	}
+	
+	@Override
+	public boolean catchObject() {
+		return true;
 	}
 }

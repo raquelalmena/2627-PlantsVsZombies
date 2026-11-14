@@ -57,4 +57,14 @@ public abstract class Zombies extends GameObject{
 	}
 	
 	public abstract Zombies copy(Position p,GameWorld gameWorld);
+	
+	@Override
+	public boolean canShareCell() {
+		return false;
+	}
+	
+	@Override
+	public boolean catchObject() {
+		return false;
+	}
 }

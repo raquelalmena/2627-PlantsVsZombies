@@ -36,4 +36,9 @@ public class Zombie extends Zombies {
 	public Zombies copy(Position p, GameWorld gameWorld) {
 		return new Zombie(p, gameWorld);
 	}
+	
+	@Override
+	public boolean canBeSpawnedAt(Position p) {
+		return game.isInBoardLimit(p) && (game.isEmpty(p) || game.getGameItemInPosition(p).canShareCell());
+	}
 }

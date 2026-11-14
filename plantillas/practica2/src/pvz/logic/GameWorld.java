@@ -16,8 +16,9 @@ public interface GameWorld {
 	boolean isInBoardLimit(Position p);
 	boolean isValidPosition(Position p);
 	GameItem getGameItemInPosition(Position p);//para cosultar qué hay en la casilla
-	void addSuncoins();
+	void addSuncoins(int coins);
 	Position randomPosition();
+	void generateSun();
 	
 	boolean addGameObject(GameObject gameObject);
 }

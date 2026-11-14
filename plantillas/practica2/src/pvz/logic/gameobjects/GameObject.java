@@ -41,8 +41,6 @@ public abstract class GameObject implements GameItem {
 	
 	public abstract void update();
 	
-	public boolean canBeSpawnedAt(Position p) {
-		return game != null && game.isInsideBoard(p) && game.isEmpty(p);
-	}
+	public abstract boolean canBeSpawnedAt(Position p);
 	
 }

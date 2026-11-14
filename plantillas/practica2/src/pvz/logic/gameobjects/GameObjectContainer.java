@@ -1,10 +1,7 @@
 package pvz.logic.gameobjects;
 
 import java.util.ArrayList;
-
-
 import java.util.List;
-import pvz.logic.Game;
 import pvz.view.Messages;
 import utils.Position;
 
@@ -101,7 +98,7 @@ public class GameObjectContainer {
 		return icon;
 	}
 	
-	public boolean doZombieReachTheHouse() {
+	public boolean doZombieReachedTheHouse() {
 		boolean reach = false;
 		int pos = 0;
 		

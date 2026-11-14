@@ -72,5 +72,20 @@ public abstract class Plant extends GameObject{
 		 return false;
 	 }
 	 
+	 @Override
+	public boolean canBeSpawnedAt(Position p) {
+		 return game.isInsideBoard(p) && (game.isEmpty(p) || game.getGameItemInPosition(p).canShareCell());
+	 }
+	 
 	 public abstract Plant copy(Position p, GameWorld gameWorld);
+	 
+	 @Override
+	 public boolean canShareCell() {
+		 return false;
+	 }
+	 
+	 @Override
+	 public boolean catchObject() {
+		 return false;
+	 }
 }
