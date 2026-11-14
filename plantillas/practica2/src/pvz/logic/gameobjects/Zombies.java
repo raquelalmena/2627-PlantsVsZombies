@@ -9,6 +9,8 @@ public abstract class Zombies extends GameObject{
 	private int endurance;
 	private int speed;
 	
+	private int cycles;
+	
 	Zombies(int damage, int endurance, int speed) {
 		this.damage = damage;
 		this.endurance = endurance;
@@ -46,6 +48,18 @@ public abstract class Zombies extends GameObject{
 	public void onExit() {}
 	
 	@Override
+	public void update() {
+		if (isAlive()) {
+			Position posibleAttack = this.position.left();
+			if (!this.game.zombieAttack(posibleAttack, damage) && cycles == speed) {
+				this.position = posibleAttack;
+				cycles = 0;
+			}
+			cycles++;
+		}
+	}
+	
+	@Override
 	public boolean receiveZombieAttack(int damage) {
 		return false;
 	}
@@ -66,5 +80,10 @@ public abstract class Zombies extends GameObject{
 	@Override
 	public boolean catchObject() {
 		return false;
+	}
+	
+	@Override
+	public boolean canBeSpawnedAt(Position p) {
+		return game.isInBoardLimit(p) && (game.isEmpty(p) || game.getGameItemInPosition(p).canShareCell());
 	}
 }

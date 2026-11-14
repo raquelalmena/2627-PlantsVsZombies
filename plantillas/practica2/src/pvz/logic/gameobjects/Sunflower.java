@@ -25,7 +25,7 @@ public class Sunflower extends Plant{
 	public void update() {
 		if (isAlive()) {
 			if (cycles == PERIOD) {
-				game.addSuncoins();//2.1 añade un Sun directamente al jugador
+				game.generateSun();//2.1 añade un Sun directamente al jugador
 				cycles = 0;
 			}
 			cycles++;

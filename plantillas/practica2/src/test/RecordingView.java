@@ -1,7 +1,6 @@
 package test;
 
 import pvz.view.GameView;
-
 import java.util.ArrayList;
 import java.util.List;
 

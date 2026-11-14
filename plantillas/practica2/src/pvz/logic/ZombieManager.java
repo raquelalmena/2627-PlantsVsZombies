@@ -87,4 +87,8 @@ public class ZombieManager {
 	public boolean allZombiesWereKilled() {
 		return remainingZombies == 0;
 	}
+	
+	public void zombieKilled() {
+		remainingZombies--;
+	}
  }

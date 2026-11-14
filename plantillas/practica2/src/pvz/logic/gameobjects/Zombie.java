@@ -9,7 +9,6 @@ public class Zombie extends Zombies {
 	public static final int ENDURANCE = 5;
 	public static final int SPEED = 2;
 	
-	private int cycles;
 	
 	public Zombie() {
 		super(DAMAGE, ENDURANCE, SPEED);
@@ -17,8 +16,9 @@ public class Zombie extends Zombies {
 	
 	public Zombie(Position p, GameWorld gameWorld) {
 		super(gameWorld, p, DAMAGE, ENDURANCE, SPEED);
-		cycles = 0;
 	}
+	
+	@Override
 	
 	@Override
 	public String getSymbol() {
@@ -30,15 +30,8 @@ public class Zombie extends Zombies {
 		return Messages.ZOMBIE_NAME;
 	}
 	
-	// falta el update() que como no hemos llegado a Actions es un lío
-	
 	@Override
 	public Zombies copy(Position p, GameWorld gameWorld) {
 		return new Zombie(p, gameWorld);
-	}
-	
-	@Override
-	public boolean canBeSpawnedAt(Position p) {
-		return game.isInBoardLimit(p) && (game.isEmpty(p) || game.getGameItemInPosition(p).canShareCell());
 	}
 }

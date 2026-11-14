@@ -1,5 +1,8 @@
 package pvz.logic;
 import java.util.Random;
+import java.util.Deque;
+import pvz.logic.actions.GameAction;
+import java.util.ArrayDeque;
 import pvz.logic.gameobjects.GameObject;
 import pvz.logic.gameobjects.factories.PlantFactory;
 import pvz.logic.gameobjects.factories.ZombieFactory;
@@ -25,11 +28,12 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	private int suncoins;
 	private int generatedCoins;
 	private int caughtCoins;
-	private int remainingZombies;
 	
 	private GameObjectContainer container;
 	private ZombieManager zombieManager;
 	private SunManager sunManager;
+	
+	private Deque<GameAction> actions;
 	
 	
 	public Game(long seed, Level level) {
@@ -43,7 +47,6 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		numCycle  = 0;
 		suncoins = INITIAL_COINS;
 		playerQuits = false;
-		remainingZombies = level.getNumberOfZombies();
 		rand = new Random(seed);
 		container = new GameObjectContainer();
 		zombieManager = new ZombieManager(this, level, rand);
@@ -64,6 +67,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	@Override
     public void reset() {
         initGame();
+        
     }
 	
 	@Override
@@ -71,16 +75,50 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.level = level;
 		this.seed = seed;
 		initGame();
+		this.actions = new ArrayDeque<>();
 	}
 
     @Override
     public void update() {
-    	// Falta eliminar objectos muertos
+    	// 1. Execute pending actions
+    	executePendingActions();
+    	
+    	// 2. Execute game Actions
+    	
+    	// 3. Game object updates
+    	
         numCycle++;
         sunManager.update();
         zombieManager.update();
         container.update();
+        
+        // 4. & 5. Remove dead and execute pending actions
+        boolean deadRemoved = true;
+        while (deadRemoved || arePendingActionsLeft()) {
+        	// 4. Remove dead
+        	deadRemoved = this.container.removeDead();
+        	
+        	// 5. execute pending actions
+        	executePendingActions();
+        }
+        
+        this.numCycle++;
     }
+    
+    public void pushAction(GameAction gameAction) {
+    	  this.actions.addLast(gameAction);
+	}
+
+	private void executePendingActions() {
+	  while (!this.actions.isEmpty()) {
+	    GameAction action = this.actions.removeFirst();
+	    action.execute(this);
+	  }
+	}
+
+	private boolean arePendingActionsLeft() {
+	  return !this.actions.isEmpty();
+	}
 
     @Override
     public void quit() {
@@ -189,7 +227,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 
     @Override
     public int getRemainingZombies() {
-        return remainingZombies;
+        return zombieManager.getRemainingZombies();
     }
 
     @Override
@@ -199,7 +237,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 
     @Override
     public boolean playerWins() {
-        return remainingZombies == 0 && zombieManager.allZombiesWereKilled();
+        return zombieManager.allZombiesWereKilled();
     }
 
     @Override
@@ -242,7 +280,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		Sun newSun = new Sun(spawnPos, this);
 		
 		if (addGameObject(newSun)) {
-			generatedCoins++;
+			generateCoins(Sun.SUNCOINS);
 		}
     }
     
@@ -258,5 +296,29 @@ public class Game implements GameStatus, GameWorld, GameModel {
     	}
     	
     	return catched;
+    }
+    
+    @Override
+    public boolean plantAttack(Position p, int damage) {
+    	GameItem objectInPosition = container.getGameItemInPosition(p);
+    	
+    	return objectInPosition.receivePlantAttack(damage);
+    }
+    
+    @Override
+	public boolean zombieAttack(Position p, int damage) {
+    	GameItem objectInPosition = container.getGameItemInPosition(p);
+    	
+    	return objectInPosition.receiveZombieAttack(damage);
+    }
+    
+    @Override
+    public void generateCoins(int coins) {
+    	generatedCoins += coins;
+    }
+    
+    @Override
+    public void zombieKilled() {
+        zombieManager.zombieKilled();
     }
 }

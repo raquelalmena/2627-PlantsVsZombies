@@ -9,16 +9,13 @@ public class ExplosiveZombie extends Zombies {
 	public static final int ENDURANCE = 5;
 	public static final int SPEED = 2;
 	
-	private int cycles;
 	
 	public ExplosiveZombie() {
 		super(DAMAGE, ENDURANCE, SPEED);
-		this.cycles = 0;
 	}
 	
 	public ExplosiveZombie(Position p, GameWorld gameWorld) {
 		super(gameWorld, p, DAMAGE, ENDURANCE, SPEED);
-		this.cycles = 0;
 	}
 	
 	@Override
@@ -31,10 +28,13 @@ public class ExplosiveZombie extends Zombies {
 		return Messages.EXPLOSIVE_ZOMBIE_NAME;
 	}
 	
-	// falta el update() que como no hemos llegado a Actions es un lío
-	
 	@Override
 	public Zombies copy(Position p, GameWorld gameWorld) {
 		return new ExplosiveZombie(p, gameWorld);
+	}
+	
+	@Override
+	public void onExit() {
+		
 	}
 }

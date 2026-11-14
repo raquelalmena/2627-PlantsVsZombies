@@ -9,8 +9,6 @@ public class BucketHead extends Zombies {
 	public static final int ENDURANCE = 8;
 	public static final int SPEED = 4;
 	
-	private int cycles;
-	
 	public BucketHead() {
 		super(DAMAGE, ENDURANCE, SPEED);
 	}
@@ -28,9 +26,6 @@ public class BucketHead extends Zombies {
 	public String getName() {
 		return Messages.BUCKET_HEAD_ZOMBIE_NAME;
 	}
-	
-	// falta el update() que como no hemos llegado a Actions es un lío
-	
 	
 	@Override
 	public Zombies copy(Position p, GameWorld gameWorld) {

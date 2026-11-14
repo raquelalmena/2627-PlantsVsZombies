@@ -16,13 +16,13 @@ public class ResetCommand extends Command {
 	boolean resetAll;
 	
 	public ResetCommand() {
-	super (
-			Messages.COMMAND_RESET_NAME, 
-			Messages.COMMAND_RESET_SHORTCUT, 
-			Messages.COMMAND_RESET_DETAILS, 
-			Messages.COMMAND_RESET_HELP
-	);
-	this.resetAll = false;
+		super (
+				Messages.COMMAND_RESET_NAME, 
+				Messages.COMMAND_RESET_SHORTCUT, 
+				Messages.COMMAND_RESET_DETAILS, 
+				Messages.COMMAND_RESET_HELP
+		);
+		this.resetAll = false;
 	}
 	
 	public ResetCommand(Level level, long seed) {

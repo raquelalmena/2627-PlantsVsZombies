@@ -19,6 +19,12 @@ public interface GameWorld {
 	void addSuncoins(int coins);
 	Position randomPosition();
 	void generateSun();
+	void generateCoins(int coins);
+	
+	void zombieKilled();
+	
+	boolean plantAttack(Position p, int damage);
+	boolean zombieAttack(Position p, int damage);
 	
 	boolean addGameObject(GameObject gameObject);
 }

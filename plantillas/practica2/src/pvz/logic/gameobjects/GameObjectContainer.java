@@ -59,12 +59,17 @@ public class GameObjectContainer {
         return c;
     }
 	
-	public void removeDead() {
+	public boolean removeDead() {
+		boolean removed = false;
 		for (int i = 0; i < gameObjects.size(); i++) {
 			if (!gameObjects.get(i).isAlive()) {
+				gameObjects.get(i).onExit();
 				gameObjects.remove(i);
+				removed = true;
 			}
 		}
+		
+		return removed;
 	}
 	
 	public boolean receiveDamage(Position p, int damage) {
