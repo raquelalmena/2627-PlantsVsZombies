@@ -47,7 +47,7 @@ public class ZombieManager {
 	 */
 	
 	private int randomZombieRow() {
-		return rand.nextInt(Game.NUM_ROWS);
+		return rand.nextInt(GameWorld.NUM_ROWS);
 	}
 
 	public void addZombie() {

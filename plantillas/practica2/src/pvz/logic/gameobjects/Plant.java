@@ -1,7 +1,6 @@
 package pvz.logic.gameobjects;
 
 import pvz.logic.GameWorld;
-import pvz.logic.gameobjects.factories.PlantFactory;
 import pvz.view.Messages;
 import utils.Position;
 
@@ -24,7 +23,6 @@ public abstract class Plant extends GameObject{
 		 this.damage = damage;
 	 }
 	 
-	 public abstract String getSymbol();
 	 public abstract String getNameAndShortcut();
 	 public abstract String getName();
 	 
@@ -72,11 +70,6 @@ public abstract class Plant extends GameObject{
 	 @Override
 	 public boolean receivePlantAttack(int damage) {
 		 return false;
-	 }
-	 
-	 @Override
-	 public boolean canBeSpawnedAt(Position p) {
-		 return PlantFactory.spawnPlant(getNameAndShortcut(), this.game, p) != null;
 	 }
 	 
 	 public abstract Plant copy(Position p, GameWorld gameWorld);

@@ -1,7 +1,6 @@
 package pvz.logic.gameobjects;
 
 import pvz.logic.GameWorld;
-import pvz.logic.gameobjects.factories.ZombieFactory;
 import pvz.view.Messages;
 import utils.Position;
 
@@ -23,7 +22,6 @@ public abstract class Zombies extends GameObject{
 		this.speed = speed;
 	}
 	
-	public abstract String getSymbol();
 	public abstract String getName();
 	
 	@Override
@@ -56,11 +54,6 @@ public abstract class Zombies extends GameObject{
 	public boolean receivePlantAttack(int damage) {
 		endurance -= damage;
 		return true;
-	}
-	
-	@Override
-	public boolean canBeSpawnedAt(Position p) {
-		return ZombieFactory.spawnZombie(getName(), this.game, p) != null;
 	}
 	
 	public abstract Zombies copy(Position p,GameWorld gameWorld);

@@ -5,6 +5,7 @@ import pvz.logic.gameobjects.factories.PlantFactory;
 import pvz.logic.gameobjects.factories.ZombieFactory;
 import utils.Position;
 import pvz.logic.gameobjects.Plant;
+import pvz.logic.gameobjects.Sun;
 import pvz.logic.gameobjects.Zombies;
 import pvz.control.Level;
 import pvz.logic.gameobjects.GameObjectContainer;
@@ -26,6 +27,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	
 	private GameObjectContainer container;
 	private ZombieManager zombieManager;
+	private SunManager sunManager;
 	
 	
 	public Game(long seed, Level level) {
@@ -73,6 +75,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
     public void update() {
     	// Falta eliminar objectos muertos
         numCycle++;
+        sunManager.update();
         zombieManager.update();
         container.update();
     }
@@ -132,7 +135,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
     
     @Override
     public boolean addGameObject(GameObject gameObject) {
-    	if (gameObject == null) {
+    	if (gameObject == null || !gameObject.canBeSpawnedAt(gameObject.getPosition())) {
     		return false;
     	}
     	
@@ -141,8 +144,10 @@ public class Game implements GameStatus, GameWorld, GameModel {
     }
 
     @Override
-    public void addSuncoins(int amount) {
-        this.suncoins += amount;
+    public void addSuncoins() {
+        if (sunManager.addSun()) {
+        	suncoins += Sun.SUNCOINS;
+        }
     }
 
     @Override
@@ -220,5 +225,13 @@ public class Game implements GameStatus, GameWorld, GameModel {
     @Override
     public boolean doZombiesReachTheHouse() {
     	return container.doZombieReachTheHouse();
+    }
+    
+    @Override
+    public Position randomPosition() {
+    	int randomRow = rand.nextInt(NUM_ROWS);
+    	int randomCol = rand.nextInt(NUM_COLS);
+    	
+    	return new Position(randomRow, randomCol);
     }
 }

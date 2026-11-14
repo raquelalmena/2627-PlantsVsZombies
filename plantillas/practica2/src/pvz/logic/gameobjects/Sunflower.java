@@ -9,7 +9,6 @@ public class Sunflower extends Plant{
 	public static final int ENDURANCE = 1;
 	public static final int PERIOD = 3;
 	public static final int DAMAGE = 0;
-	private static final int COINS_GENERATED = 10;
 	
 	private int cycles;
 	
@@ -26,7 +25,7 @@ public class Sunflower extends Plant{
 	public void update() {
 		if (isAlive()) {
 			if (cycles == PERIOD) {
-				game.addSuncoins(COINS_GENERATED);//2.1 añade coins directamente al jugador
+				game.addSuncoins();//2.1 añade un Sun directamente al jugador
 				cycles = 0;
 			}
 			cycles++;

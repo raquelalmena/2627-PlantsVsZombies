@@ -27,6 +27,8 @@ public abstract class GameObject implements GameItem {
 		return position;
 	}
 	
+	public abstract String getSymbol();
+	
 	public abstract String getIcon();
 	
 	public abstract String getDescription();
@@ -39,6 +41,8 @@ public abstract class GameObject implements GameItem {
 	
 	public abstract void update();
 	
-	public abstract boolean canBeSpawnedAt(Position p);
+	public boolean canBeSpawnedAt(Position p) {
+		return game != null && game.isInsideBoard(p) && game.isEmpty(p);
+	}
 	
 }
