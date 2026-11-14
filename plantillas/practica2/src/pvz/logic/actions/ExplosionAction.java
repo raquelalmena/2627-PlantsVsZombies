@@ -2,33 +2,25 @@ package pvz.logic.actions;
 
 import pvz.logic.GameWorld;
 import utils.Position;
-import java.util.List;
-import java.util.Arrays;
 
 public class ExplosionAction implements GameAction {
-	private Position position;
+	private Position[] positions;
 	private int damage;
+	private boolean plantAttack;
 	
-	public ExplosionAction(Position position, int damage) {
-		this.position = position;
+	public ExplosionAction(int damage, boolean plantAttack, Position[] positions) {
+		this.positions = positions;
 		this.damage = damage;
+		this.plantAttack = plantAttack;
 	}
 	
-	public void execute(GameWorld game) {
-		List<Position> positions = Arrays.asList(
-				this.position.up(),
-				this.position.upRight(),
-				this.position.upLeft(),
-				this.position.right(),
-				this.position.left(),
-				this.position.down(),
-				this.position.downRight(),
-				this.position.downLeft()
-		);
-		
-		for (int i = 0; i < positions.size(); i++) {
-			if (!game.plantAttack(positions.get(i), this.damage)) {
-				game.zombieAttack(positions.get(i), this.damage);
+	public void execute(GameWorld game) {		
+		for (int i = 0; i < positions.length; i++) {
+			if (!plantAttack) {
+				game.zombieAttack(positions[i], this.damage);
+			}
+			else {
+				game.plantAttack(positions[i], this.damage);
 			}
 		}
 	}

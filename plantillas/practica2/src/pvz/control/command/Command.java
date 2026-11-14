@@ -21,9 +21,10 @@ public abstract class Command {
 	    new ResetCommand(),
 	    new HelpCommand(),
 	    new ExitCommand(),
-	    new NoneCommand(),
+	    new UpdateCommand(),
 	    new AddPlantCheatCommand(),
-	    new CatchCommand()
+	    new CatchCommand(),
+	    new UnknownCommand()
 	  );
 	  
 	  //constructora
@@ -39,7 +40,7 @@ public abstract class Command {
 	  public static Command parse(String[] commandWords) {//analiza la entrada del player y vdevuelve el comando correspondiente		
 		  Command com = null;
 		  if (commandWords == null || commandWords.length == 0 || commandWords[0].isEmpty())  
-			  com = new NoneCommand();//por si entrada vacía o nula (enter por ej)
+			  com = new UpdateCommand();//por si entrada vacía o nula (enter por ej)
 		  else {
 			  int i = 0;
 			  while (com == null && i < AVAILABLE_COMMANDS.size()) {
@@ -49,7 +50,12 @@ public abstract class Command {
 				  i++;
 			  }
 		  }
-		  return  com;//devuelve null si recorre la lista y no encuentra coincidencia
+		  
+		  if (com == null) {
+			  com = new UnknownCommand();
+		  }
+		  
+		  return  com;//UnknownCommand null si recorre la lista y no encuentra coincidencia
 	  }
 	   
 	  public boolean matchCommand(String c) {//comprueba si la palabra introdcida coincide con el name o shortcut del comando

@@ -9,8 +9,8 @@ import java.util.Collections;
 
 public class ZombieFactory {
 	private static final List<Zombies> AVAILABLE_ZOMBIES = Arrays.asList(
-		new Zombie(),
-		new BucketHead(),
+		new CommonZombie(),
+		new BucketHeadZombie(),
 		new SportyZombie(),
 		new ExplosiveZombie()
 	);

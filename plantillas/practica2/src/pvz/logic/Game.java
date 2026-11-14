@@ -11,7 +11,6 @@ import pvz.logic.gameobjects.Plant;
 import pvz.logic.gameobjects.Sun;
 import pvz.logic.gameobjects.Zombies;
 import pvz.control.Level;
-import pvz.logic.gameobjects.GameObjectContainer;
 import pvz.logic.gameobjects.GameItem;
 
 
@@ -53,11 +52,6 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	}
 	
 	//TODO. Falta comentar lo que hace cada una auqnue sea obvio para que no nos penalice jeje:
-	
-	@Override
-	public GameItem getGameItemInPosition (Position p) {
-		return container.getGameItemInPosition(p);
-	}
 	
 	@Override
 	public int getCycles() {
@@ -174,11 +168,6 @@ public class Game implements GameStatus, GameWorld, GameModel {
     }
 
     @Override
-    public void addSuncoins(int coins) {
-        suncoins += coins;
-    }
-
-    @Override
     public int getCoins() {
         return suncoins;
     }
@@ -212,7 +201,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 
     @Override
     public boolean isEmpty(Position p) {
-        return container.getGameItemInPosition(p) == null;
+        return container.isPositionEmpty(p);
     }
 
     @Override
@@ -315,6 +304,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
     @Override
     public void generateCoins(int coins) {
     	generatedCoins += coins;
+    	suncoins += coins;
     }
     
     @Override

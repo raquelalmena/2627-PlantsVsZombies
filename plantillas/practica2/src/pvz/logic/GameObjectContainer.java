@@ -1,7 +1,10 @@
-package pvz.logic.gameobjects;
+package pvz.logic;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pvz.logic.gameobjects.GameItem;
+import pvz.logic.gameobjects.GameObject;
 import pvz.view.Messages;
 import utils.Position;
 
@@ -115,5 +118,22 @@ public class GameObjectContainer {
 		}
 		
 		return reach;
+	}
+	
+	public boolean isPositionEmpty(Position p) {
+		int pos = 0;
+		boolean found = false;
+		
+		while (!found && pos < gameObjects.size()) {
+			GameObject gameObject= gameObjects.get(pos);
+			found = gameObject.isAlive() && gameObject.isInPosition(p) && !gameObject.canShareCell();
+			pos++;
+		}
+		
+		return !found;
+	}
+	
+	public anyIncolumn(Position p) {
+		
 	}
 }

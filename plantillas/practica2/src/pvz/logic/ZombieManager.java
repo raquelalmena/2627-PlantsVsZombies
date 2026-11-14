@@ -23,12 +23,14 @@ public class ZombieManager {
 	private Level level;
 	private Random rand;
 	private int remainingZombies;
+	private int zombiesKilled;
 
 	public ZombieManager(Game game, Level level, Random rand) {
 		this.game = game;
 		this.level = level;
 		this.rand = rand;
 		this.remainingZombies = level.getNumberOfZombies();
+		this.zombiesKilled = 0;
 	}
 
 	/**
@@ -85,10 +87,10 @@ public class ZombieManager {
 	}
 	
 	public boolean allZombiesWereKilled() {
-		return remainingZombies == 0;
+		return zombiesKilled == level.getNumberOfZombies();
 	}
 	
 	public void zombieKilled() {
-		remainingZombies--;
+		zombiesKilled++;
 	}
  }

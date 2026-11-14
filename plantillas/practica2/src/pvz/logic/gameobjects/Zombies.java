@@ -45,12 +45,14 @@ public abstract class Zombies extends GameObject{
 	public void onEnter() {}
 	
 	@Override
-	public void onExit() {}
+	public void onExit() {
+		game.zombieKilled();
+	}
 	
 	@Override
 	public void update() {
 		if (isAlive()) {
-			Position posibleAttack = this.position.left();
+			Position posibleAttack = this.getPosition().left();
 			if (!this.game.zombieAttack(posibleAttack, damage) && cycles == speed) {
 				this.position = posibleAttack;
 				cycles = 0;
@@ -84,6 +86,6 @@ public abstract class Zombies extends GameObject{
 	
 	@Override
 	public boolean canBeSpawnedAt(Position p) {
-		return game.isInBoardLimit(p) && (game.isEmpty(p) || game.getGameItemInPosition(p).canShareCell());
+		return game.isInBoardLimit(p) && game.isEmpty(p);
 	}
 }

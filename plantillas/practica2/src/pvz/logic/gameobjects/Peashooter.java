@@ -32,24 +32,15 @@ public class Peashooter extends Plant{
 	}
 	
 	@Override
-	public void update() {
-	    if (isAlive()) {
-	        Position p = getPosition();
-	        boolean hit = false;
-	        Position target = p.right();
-
-	        while (!hit && game.isInsideBoard(target)) {
-	            GameItem item = game.getGameItemInPosition(target);
-	            
-	            if (item != null) {
-	                // Al atacar al item, receiveZombieAttack o recibir ataque según la interfaz
-	                hit = item.receivePlantAttack(DAMAGE);
-	            } else {
-	                target = target.right();
-	            }
-	        }
-	    }
-	}
+	 public void update() {
+		 if (isAlive()) {
+			 Position possibleAttack = this.getPosition().right();
+			 
+			 while (game.isInsideBoard(possibleAttack) && !this.game.plantAttack(possibleAttack, DAMAGE)) {
+				 possibleAttack = possibleAttack.right();
+			 }
+		 }
+	 }
 	
 	@Override
     public String getSymbol() {
