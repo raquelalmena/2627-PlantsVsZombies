@@ -14,7 +14,6 @@ public class Controller {
 	private final GameModel game;
 	private final GameView view;
 
-	//constructora. asocia un GameModel y un GameView con el parámetro game
 	public Controller(Game game) {
 		this.game = game;
 		this.view = new GamePrinter(game);
