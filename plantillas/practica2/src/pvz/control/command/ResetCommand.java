@@ -13,7 +13,7 @@ public class ResetCommand extends Command {
 	private Level level;
 	private long seed;
 	
-	private boolean resetAll;//3.4
+	boolean resetAll;
 	private String errorMessage;
 	
 	public ResetCommand() {
@@ -26,7 +26,7 @@ public class ResetCommand extends Command {
 		this.resetAll = false;
 	}
 	
-	private ResetCommand(Level level, long seed) {//3.4
+	public ResetCommand(Level level, long seed) {
 		this();
 		this.seed = seed;
 		this.level = level;
