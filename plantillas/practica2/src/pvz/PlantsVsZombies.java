@@ -1,5 +1,5 @@
 package pvz;
-//prueba git
+
 import java.util.Locale;
 
 import pvz.control.Controller;
