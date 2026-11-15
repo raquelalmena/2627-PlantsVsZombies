@@ -40,7 +40,7 @@ public class ListZombiesCommand extends Command{
 		
 		List<Zombie> zombies = ZombieFactory.getAvailableZombies();
 		
-		String zombiesDescriptions = "";
+		String zombiesDescriptions = Messages.EMPTY_STRING;
 		
 		for (int i = 0; i < zombies.size(); i++) {
 			if (!zombiesDescriptions.isEmpty()) {

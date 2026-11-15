@@ -19,7 +19,6 @@ public class GameObjectContainer {
 	public void add(GameObject o) {
 		if (o != null) {
 			this.gameObjects.add(o);
-			o.onEnter();
 		}
 	}
 	

@@ -44,7 +44,7 @@ public class ListPlantsCommand extends Command{
 		
 		List<Plant> plants = PlantFactory.getAvailablePlants();
 		
-		String plantDescriptions = "";
+		String plantDescriptions = Messages.EMPTY_STRING;
 		
 		for (int i = 0; i < plants.size(); i++) {
 			if (!plantDescriptions.isEmpty()) {
