@@ -25,6 +25,8 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	private int suncoins;
 	private int generatedCoins;
 	private int caughtCoins;
+	
+	// Así podemos comprobar que solo coge soles una vez por cada ciclo
 	private boolean caughtSun;
 	
 	private GameObjectContainer container;//guarda todos los objectos del tablero
@@ -39,7 +41,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.level = level;
 		reset();
 	}
-		
+
 	@Override
 	public int getCycles() {
 		return numCycle;
@@ -75,11 +77,13 @@ public class Game implements GameStatus, GameWorld, GameModel {
     	//primero las pending
     	executePendingActions();
     	
+
     	//luego game actions
         zombieManager.update();
     	sunManager.update();
 
     	//luego hace los updates
+
         container.update();
         
         //elimina muertos y pending
@@ -116,7 +120,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
     public void quit() {
         this.playerQuits = true;
     }
-
+    
     @Override
     public boolean addGameObject(String objectName, Position p) {
     	// comprobamos si objectName coincide con alguno de los nombres de las plantas disponibles
