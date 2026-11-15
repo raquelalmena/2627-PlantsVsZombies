@@ -1,7 +1,5 @@
 package pvz.control.command;
 
-import java.util.ArrayList;
-import java.util.List;
 import pvz.logic.GameModel; 
 import pvz.view.GameView; 
 import pvz.view.Messages;
@@ -37,17 +35,22 @@ public class HelpCommand extends Command {
 			gv.showError(errorMessage);
 			return;
 		}
-		List<String> lines = new ArrayList<>();//creo la lista vacía para guardar las líneas de ayuda
-        lines.add(Messages.HELP_AVAILABLE_COMMANDS);//añade la primera línea. 'título'
+		
+		StringBuilder helpText = new StringBuilder();
+        helpText.append(Messages.HELP_AVAILABLE_COMMANDS);//añade la primera línea. 'título'
+        
         // Recorremos los comandos para construir la ayuda dinámica
         for (int i = 0; i < AVAILABLE_COMMANDS.size(); i++) {
+        	      	
         	Command command = AVAILABLE_COMMANDS.get(i);
-        	//construye el texto descriptivo con +
-            String line = command.getDetails() + Messages.HELP_DETAILS_COMMAND_HELP_SEPARATOR + command.getHelp();
-            //guarda la línea construida en lines
-            lines.add(line);
+        	
+        	helpText.append(Messages.LINE_SEPARATOR);
+        	helpText.append(command.getDetails());
+        	helpText.append(Messages.HELP_DETAILS_COMMAND_HELP_SEPARATOR);
+        	helpText.append(command.getHelp());
         }
-        gv.showMessage(String.join(Messages.LINE_SEPARATOR, lines));//une todas las lineas creadas y las manda a gv que las muestra
+        
+        gv.showMessage(helpText.toString());
 	}
 
 }

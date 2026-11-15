@@ -5,7 +5,6 @@ import pvz.logic.Game;
 import pvz.view.GamePrinter;
 import pvz.logic.GameModel;
 import pvz.view.GameView;
-import pvz.view.Messages;
 
 /**
  * Input/output coordinator of the game (the C in MVC).
@@ -17,9 +16,6 @@ import pvz.view.Messages;
  * state of its own; the source of truth is always {@link Game}.
  */
 public class Controller {
-
-	// En los test aparece la constructora 
-	// Controller(Game game);
 	
 	
 	//no cambian durante toda la aprtida
@@ -43,9 +39,7 @@ public class Controller {
 			String[] c = view.getPrompt();//declarado en game view, lee una alínea y la devuelve separada por espacios
 			Command command = Command.parse(c); //ahora es el parse() quien busca el comando que coincida con el del player
 										
-			//ahora solo
-			if (command != null) command.execute(game, view);//si es válido, se ejecuta
-			else view.showError(Messages.UNKNOWN_COMMAND);//si no, se muestra en pantalla el error correspondiente
+			command.execute(game, view);//si es válido, se ejecuta
 			
 		}
 		view.showEndMessage();//muestra Game over y el motivo

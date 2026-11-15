@@ -40,18 +40,18 @@ public class ListZombiesCommand extends Command{
 		
 		List<Zombie> zombies = ZombieFactory.getAvailableZombies();
 		
-		String zombiesDescriptions = Messages.EMPTY_STRING;
+		StringBuilder zombiesDescriptions = new StringBuilder();
 		
 		for (int i = 0; i < zombies.size(); i++) {
-			if (!zombiesDescriptions.isEmpty()) {
-				zombiesDescriptions += Messages.LINE_SEPARATOR;
+			if (i > 0) {
+				zombiesDescriptions.append(Messages.LINE_SEPARATOR);
 			}
 			
-			zombiesDescriptions += zombies.get(i).getDescription();
+			zombiesDescriptions.append(zombies.get(i).getDescription());
 		}
 		
-	zombiesDescriptions += Messages.LINE_SEPARATOR;
+	zombiesDescriptions.append(Messages.LINE_SEPARATOR);
 		
-		gv.showMessage(zombiesDescriptions);
+		gv.showMessage(zombiesDescriptions.toString());
 	}
 }

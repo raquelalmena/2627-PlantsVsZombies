@@ -44,19 +44,19 @@ public class ListPlantsCommand extends Command{
 		
 		List<Plant> plants = PlantFactory.getAvailablePlants();
 		
-		String plantDescriptions = Messages.EMPTY_STRING;
+		StringBuilder plantDescriptions = new StringBuilder();
 		
 		for (int i = 0; i < plants.size(); i++) {
-			if (!plantDescriptions.isEmpty()) {
-				plantDescriptions += Messages.LINE_SEPARATOR;
+			if (i > 0) {
+				plantDescriptions.append(Messages.LINE_SEPARATOR);
 			}
 			
-			plantDescriptions += plants.get(i).getDescription();
+			plantDescriptions.append(plants.get(i).getDescription());
 		}
 		
-		plantDescriptions += Messages.LINE_SEPARATOR;
+		plantDescriptions.append(Messages.LINE_SEPARATOR);
 		
-		gv.showMessage(plantDescriptions);
+		gv.showMessage(plantDescriptions.toString());
     }	
 	
 }
