@@ -41,10 +41,9 @@ public class Controller {
 		while (!game.hasGameFinished()) { //se ejecuta mientras la partida no termine			
 			//tiene que leer al player
 			String[] c = view.getPrompt();//declarado en game view, lee una alínea y la devuelve separada por espacios
-			Command command = Command.parse(c); //ahora es el parse() quien busca el comando que coincida con el del player
-										
-			//ahora solo
-			if (command != null) command.execute(game, view);//si es válido, se ejecuta
+			Command command = Command.parse(c); //ahora es el parse() quien busca el comando que coincida con el del player						
+			//4. parse nuca devuelve null
+			command.execute(game, view);//si es válido, se ejecuta
 			else view.showError(Messages.UNKNOWN_COMMAND);//si no, se muestra en pantalla el error correspondiente
 			
 		}

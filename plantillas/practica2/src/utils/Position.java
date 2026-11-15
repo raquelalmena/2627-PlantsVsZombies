@@ -19,12 +19,8 @@ public class Position {
 		return col;
 	}
 	
-	// Revisar las alineaciones (diagrama clase)
-	
-	public boolean isHorizontallyAligned(Position p) {
-		return p != null && row == p.row();
-	}
-	
+	//4. horizontally no lo usamos ni en la parte 2 , lo he borrado
+
 	public boolean isVerticallyAligned(Position p) {
 		return p != null && col == p.column();
 	}
