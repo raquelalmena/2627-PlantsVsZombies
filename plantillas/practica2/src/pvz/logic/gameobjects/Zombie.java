@@ -57,30 +57,21 @@ public abstract class Zombie extends GameObject{
 	
 	@Override
 	public void update() {
-		if (isAlive()) {
+		if (isAlive()) { //si alive tiene que moverse a la casilla de la izda si está libre
 			
 			Position nextPos = position.left();
 			
-			if (game.isEmpty(nextPos)) {
-				if (cycles == speed) {
-					this.position = nextPos;
-					cycles = 1;
-				}
-				else {
-					cycles++;
-				}
-
+			if (cycles == speed && game.isEmpty(nextPos)) { //si le toca moverse y la nextPos esta vacia
+				this.position = nextPos;
+				cycles = 0;
 			}
-			else {
-				if (cycles < speed){
-					cycles++;
-				}
-				
+			//una vez en nextPos si tiene planta delante, la ataca
+			if (!game.isEmpty(nextPos)) {
 				game.zombieAttack(nextPos, damage);
 			}
-			
-			
-		}
+			if (cycles < speed) {
+				cycles++;
+			}
 	}
 	
 	@Override
