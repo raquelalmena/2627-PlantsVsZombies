@@ -156,7 +156,7 @@ public class GamePrinter implements GameView {
 			buffer.append(Messages.ZOMBIES_WIN);
 		}
 
-		System.out.println(buffer);
+		System.out.print(buffer);
 	}
 
 	@Override
