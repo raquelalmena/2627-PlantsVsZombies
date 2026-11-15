@@ -23,14 +23,14 @@ public class ZombieManager {
 	private Level level;
 	private Random rand;
 	private int remainingZombies;
-	private int zombiesAlive; //3.1
+	private int zombiesKilled;
 
 	public ZombieManager(Game game, Level level, Random rand) {
 		this.game = game;
 		this.level = level;
 		this.rand = rand;
 		this.remainingZombies = level.getNumberOfZombies();
-		this.zombiesAlive = 0;//3.1 sigue siendo 0 ahora que es alive?
+		this.zombiesKilled = 0;
 	}
 
 	/**
@@ -67,7 +67,6 @@ public class ZombieManager {
 			// si se ha podido añadir el Zombie entonces restamos el número de zombies que faltan
 			if (newZombie != null && game.addGameObject(newZombie)) {
 				remainingZombies--;
-				zombiesAlive++; //3.1 se añade aquí, no?
 			}
 		}
 		
@@ -93,14 +92,10 @@ public class ZombieManager {
 	}
 	
 	public boolean allZombiesWereKilled() {
-		return (remainingZombies == 0 && zombiesAlive == 0); //3.1
+		return zombiesKilled == level.getNumberOfZombies();
 	}
 	
 	public void zombieKilled() {
-		zombiesAlive--; //3.1
-	}
-	
-	public void zombieAdded() {//3.1
-		zombiesAlive++;
+		zombiesKilled++;
 	}
  }
