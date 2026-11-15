@@ -146,6 +146,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
     	        Zombie zombie = ZombieFactory.spawnZombie(objectName, this, p);
 
     	        if (zombie != null) {
+    	        	//3.1 iría aquí: zombieManager.zombieAdded(); ??
     	            return addGameObject(zombie);
     	        }
     	}
@@ -169,6 +170,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
         
         // si nos devuelve null entonces el objectName no corresponde al de un zombie
         if (zombie != null) {
+        	//3.1 iría aquí: zombieManager.zombieAdded(); ??
         	return addGameObject(zombie);
         }
         
