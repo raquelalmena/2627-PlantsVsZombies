@@ -66,12 +66,15 @@ public abstract class Zombie extends GameObject{
 				cycles = 0;
 			}
 			//una vez en nextPos si tiene planta delante, la ataca
+			nextPos = position.left();
 			if (!game.isEmpty(nextPos)) {
 				game.zombieAttack(nextPos, damage);
 			}
+			
 			if (cycles < speed) {
 				cycles++;
 			}
+		}
 	}
 	
 	@Override
