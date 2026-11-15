@@ -108,6 +108,9 @@ public abstract class Zombie extends GameObject{
 	
 	@Override
 	public boolean canBeSpawnedAt(Position p) {
-		return (game.isInsideBoard(p) || game.isInBoardLimit(p)) && game.isEmpty(p);
-	}
+		return game.isInBoardLimit(p); 
+	} //no tiene que estar vacía tb pq en la col 8 sí puede haber más de un zombie. como se actualizan de uno e uno, 
+	//el primero comprueba si la col 7 vacía y avanza si está libre. luego cuando lo haga el segundo, no podrá avanzar 
+	//y no se solapan nunca los zombies dentro del tablero de juego
+	//si esta en boardlimit, está tb insideboard
 }
