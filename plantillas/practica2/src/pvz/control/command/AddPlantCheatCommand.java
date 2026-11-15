@@ -5,7 +5,7 @@ import java.util.Scanner;
 import pvz.view.*;
 import utils.Position;
 
-//este comand permite añadir una planta gratis
+//este command permite añadir una planta gratis
 //hereda de comand asi q se pone extends Command, para poder sobreescribir funciones de command
 
 public class AddPlantCheatCommand extends Command{
@@ -13,7 +13,7 @@ public class AddPlantCheatCommand extends Command{
 	private String plantName;
 	private int col;
 	private int row;
-	private String errorMessage; //guarda mensaje de error si comando esta mal ecrito
+	private String errorMessage; //guarda mensaje de error quue corresponda
 	
 	//constructora sin parámetros para AVAILABLE_COMMANDS
 	public AddPlantCheatCommand() {
@@ -88,7 +88,7 @@ public class AddPlantCheatCommand extends Command{
 		if (!gm.validPlantName(this.plantName)) {
 			gv.showError(Messages.INVALID_GAME_OBJECT);
 		}
-		//si casilla mal (fuera del tablero u ocupada)
+		//si casilla mal (fuera del tablero o ocupada)
 		else if (!gm.isInsideBoard(pos) || !gm.isEmpty(pos)) {
 			gv.showError(Messages.INVALID_POSITION);
 		}

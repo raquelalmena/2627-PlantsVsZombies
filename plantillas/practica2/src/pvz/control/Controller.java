@@ -14,7 +14,7 @@ public class Controller {
 	private final GameModel game;
 	private final GameView view;
 
-	//constructora. une game (modelo)con la  gameprinter(vista)
+	//constructora. asocia un GameModel y un GameView con el parámetro game
 	public Controller(Game game) {
 		this.game = game;
 		this.view = new GamePrinter(game);
@@ -27,11 +27,11 @@ public class Controller {
 		view.showGame(); //la vista muestra el estado inicial del tablero y del juego
 		
 		while (!game.hasGameFinished()) { //se ejecuta mientras la partida no termine			
-			//tiene que leer al player
+			//tiene que leer el comando introducido por el player
 			String[] c = view.getPrompt();//declarado en game view, lee una alínea y la devuelve separada por espacios
 			Command command = Command.parse(c); //ahora es el parse() quien busca el comando que coincida con el del player
 										
-			command.execute(game, view);//si es válido, se ejecuta
+			command.execute(game, view);//se ejecuta el comando 
 			
 		}
 		view.showEndMessage();//muestra Game over y el motivo

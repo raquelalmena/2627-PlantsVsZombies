@@ -6,7 +6,7 @@ import pvz.view.GameView;
 import pvz.view.Messages;
 import utils.Position;
 
-//este comadno permite añadir plantas pagando
+//este comadno permite añadir plantas gastando suncoins
 //hereda de Command 
 
 public class AddPlantCommand extends Command{//extends por la herencia de la superclase
@@ -14,7 +14,7 @@ public class AddPlantCommand extends Command{//extends por la herencia de la sup
 	private int col;
 	private int row;
 	
-	private String errorMessage;//guarda mensaje de error si comando esta mal ecrito
+	private String errorMessage;//guarda mensaje de error si comando está mal ecrito
 	
 	//constructora sin parámetros para AVAILABlE_COMANDS
 	public AddPlantCommand() {
@@ -35,7 +35,7 @@ public class AddPlantCommand extends Command{//extends por la herencia de la sup
 		this.row = r;
 	}
 	
-	private AddPlantCommand(String errorMessage) {//llama a construct sin parám y guarga el mensaje de error
+	private AddPlantCommand(String errorMessage) {//llama a construct sin parámetros y guarga el mensaje de error
 		this();
 		this.errorMessage = errorMessage;
 	}

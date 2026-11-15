@@ -17,7 +17,9 @@ public enum Level {
 		this.zombieFrequency = zombieFrequency;
 	}
 	
-	public int getNumberOfZombies() {//Los he puesto otra vez pq como son private tiene que haber getters
+	
+	//GETTERS
+	public int getNumberOfZombies() {
         return numberOfZombies;
     }
 
