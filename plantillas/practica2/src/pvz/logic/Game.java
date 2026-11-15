@@ -1,9 +1,11 @@
 package pvz.logic;
-import java.util.Random;
 
+import java.util.Random;
 import java.util.Deque;
-import pvz.logic.actions.GameAction;
 import java.util.ArrayDeque;
+
+import pvz.logic.actions.GameAction;
+
 import pvz.logic.gameobjects.GameObject;
 import pvz.logic.gameobjects.factories.PlantFactory;
 import pvz.logic.gameobjects.factories.ZombieFactory;
@@ -13,8 +15,6 @@ import pvz.logic.gameobjects.Sun;
 import pvz.logic.gameobjects.Zombie;
 import pvz.control.Level;
 
-
-// FALTA RANDOM
 
 public class Game implements GameStatus, GameWorld, GameModel {
 	public static final int INITIAL_COINS = 50;
@@ -57,7 +57,6 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.actions = new ArrayDeque<>();
 	}
 	
-	//TODO. Falta comentar lo que hace cada una auqnue sea obvio para que no nos penalice jeje:
 	
 	@Override
 	public int getCycles() {
@@ -146,7 +145,6 @@ public class Game implements GameStatus, GameWorld, GameModel {
     	        Zombie zombie = ZombieFactory.spawnZombie(objectName, this, p);
 
     	        if (zombie != null) {
-    	        	//3.1 iría aquí: zombieManager.zombieAdded(); ??
     	            return addGameObject(zombie);
     	        }
     	}
@@ -170,7 +168,6 @@ public class Game implements GameStatus, GameWorld, GameModel {
         
         // si nos devuelve null entonces el objectName no corresponde al de un zombie
         if (zombie != null) {
-        	//3.1 iría aquí: zombieManager.zombieAdded(); ??
         	return addGameObject(zombie);
         }
         
@@ -330,5 +327,10 @@ public class Game implements GameStatus, GameWorld, GameModel {
     @Override
     public void zombieKilled() {
         zombieManager.zombieKilled();
+    }
+    
+    @Override
+    public void zombieAdded() {
+    	zombieManager.zombieAdded();
     }
 }

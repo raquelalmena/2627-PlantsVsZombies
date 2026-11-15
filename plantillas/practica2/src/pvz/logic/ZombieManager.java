@@ -30,7 +30,7 @@ public class ZombieManager {
 		this.level = level;
 		this.rand = rand;
 		this.remainingZombies = level.getNumberOfZombies();
-		this.zombiesAlive = 0;//3.1 sigue siendo 0 ahora que es alive?
+		this.zombiesAlive = 0;
 	}
 
 	/**
@@ -67,7 +67,6 @@ public class ZombieManager {
 			// si se ha podido añadir el Zombie entonces restamos el número de zombies que faltan
 			if (newZombie != null && game.addGameObject(newZombie)) {
 				remainingZombies--;
-				zombiesAlive++; //3.1 se añade aquí, no?
 			}
 		}
 		
