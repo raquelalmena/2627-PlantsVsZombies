@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.Collections;
 
 public class ZombieFactory {
-	private static final List<Zombies> AVAILABLE_ZOMBIES = Arrays.asList(
+	private static final List<Zombie> AVAILABLE_ZOMBIES = Arrays.asList(
 		new CommonZombie(),
 		new BucketHeadZombie(),
 		new SportyZombie(),
 		new ExplosiveZombie()
 	);
 	
-	public static Zombies spawnZombie(String zombieName, GameWorld game, Position position) {
+	public static Zombie spawnZombie(String zombieName, GameWorld game, Position position) {
 		boolean found = false;
 		int pos = 0;
-		Zombies zombie = null;
+		Zombie zombie = null;
 		
 		while (!found && pos < AVAILABLE_ZOMBIES.size()) {
 			zombie = AVAILABLE_ZOMBIES.get(pos);
@@ -39,7 +39,7 @@ public class ZombieFactory {
 		return zombie;
 	}
 	
-	public static List<Zombies> getAvailableZombies() {
+	public static List<Zombie> getAvailableZombies() {
 		return Collections.unmodifiableList(AVAILABLE_ZOMBIES);
 	}
 	
@@ -48,7 +48,7 @@ public class ZombieFactory {
 			return false;
 		}
 		
-		Zombies zombie = null;
+		Zombie zombie = null;
 		int pos = 0;
 		boolean found = false;
 		

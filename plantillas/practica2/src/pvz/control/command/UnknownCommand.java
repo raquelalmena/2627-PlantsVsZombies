@@ -13,4 +13,9 @@ public class UnknownCommand extends Command {
 	public void execute(GameModel gm, GameView gv) {
 		gv.showError(Messages.UNKNOWN_COMMAND);
 	}
+	
+	@Override
+	public boolean matchCommand(String c) {
+		return false;
+	}
 }

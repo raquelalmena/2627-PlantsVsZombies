@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import pvz.logic.GameWorld;
 import pvz.logic.actions.ExplosionAction;
 import pvz.logic.gameobjects.ExplosiveZombie;
-import pvz.logic.gameobjects.Zombies;
+import pvz.logic.gameobjects.Zombie;
 import test.FakeGameWorld.Attack;
 import utils.Position;
 
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ExplosiveZombieTest extends AbstractZombieTest {
 
     @Override
-    protected Zombies create(Position position, GameWorld world) {
+    protected Zombie create(Position position, GameWorld world) {
         return new ExplosiveZombie(position, world);
     }
 

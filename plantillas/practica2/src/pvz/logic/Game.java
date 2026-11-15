@@ -1,5 +1,6 @@
 package pvz.logic;
 import java.util.Random;
+
 import java.util.Deque;
 import pvz.logic.actions.GameAction;
 import java.util.ArrayDeque;
@@ -9,9 +10,8 @@ import pvz.logic.gameobjects.factories.ZombieFactory;
 import utils.Position;
 import pvz.logic.gameobjects.Plant;
 import pvz.logic.gameobjects.Sun;
-import pvz.logic.gameobjects.Zombies;
+import pvz.logic.gameobjects.Zombie;
 import pvz.control.Level;
-import pvz.logic.gameobjects.GameItem;
 
 
 // FALTA RANDOM
@@ -27,6 +27,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	private int suncoins;
 	private int generatedCoins;
 	private int caughtCoins;
+	private boolean caughtSun;
 	
 	private GameObjectContainer container;
 	private ZombieManager zombieManager;
@@ -42,13 +43,18 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	}
 	
 	private void initGame() { //separo del cosntructor para usar en reset
-		//ya no Random rand pq no es local
 		numCycle  = 0;
 		suncoins = INITIAL_COINS;
 		playerQuits = false;
 		rand = new Random(seed);
 		container = new GameObjectContainer();
 		zombieManager = new ZombieManager(this, level, rand);
+		generatedCoins = 0;
+		caughtCoins = 0;
+		caughtSun = false;
+		sunManager = new SunManager(this);
+		
+		this.actions = new ArrayDeque<>();
 	}
 	
 	//TODO. Falta comentar lo que hace cada una auqnue sea obvio para que no nos penalice jeje:
@@ -69,7 +75,6 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		this.level = level;
 		this.seed = seed;
 		initGame();
-		this.actions = new ArrayDeque<>();
 	}
 
     @Override
@@ -78,12 +83,12 @@ public class Game implements GameStatus, GameWorld, GameModel {
     	executePendingActions();
     	
     	// 2. Execute game Actions
+
+        zombieManager.update();
+    	sunManager.update();
     	
     	// 3. Game object updates
-    	
-        numCycle++;
-        sunManager.update();
-        zombieManager.update();
+
         container.update();
         
         // 4. & 5. Remove dead and execute pending actions
@@ -97,6 +102,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
         }
         
         this.numCycle++;
+        caughtSun = false;
     }
     
     public void pushAction(GameAction gameAction) {
@@ -122,14 +128,26 @@ public class Game implements GameStatus, GameWorld, GameModel {
     @Override
     public boolean addGameObject(String objectName, Position p) {
     	// comprobamos si objectName coincide con alguno de los nombres de las plantas disponibles
-        Plant plant = PlantFactory.spawnPlant(objectName, this, p);
-        
-        // si nos devuelve null entonces el objectName no corresponde al de una planta
-        if (plant != null && this.suncoins >= plant.getCost()) {
-            this.suncoins -= plant.getCost();//descuenta soles
-            return addGameObject(plant);
-        }
-        
+    	if (PlantFactory.validPlantName(objectName) && isValidPosition(p)) {
+    		Plant plant = PlantFactory.spawnPlant(objectName, this, p);
+            
+            // si nos devuelve null entonces el objectName no corresponde al de una planta
+            if (plant != null && this.suncoins >= plant.getCost()) {
+                this.suncoins -= plant.getCost();//descuenta soles
+                return addGameObject(plant);
+            }
+            
+
+    	}
+    	
+    	if (ZombieFactory.validZombieName(objectName)) {
+    	        Zombie zombie = ZombieFactory.spawnZombie(objectName, this, p);
+
+    	        if (zombie != null) {
+    	            return addGameObject(zombie);
+    	        }
+    	}
+    	
         return false;
     }
     
@@ -145,7 +163,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
         }
         
         // comprobamos si objectName coincide con alguno de los nombres de los zombies disponibles
-        Zombies zombie = ZombieFactory.spawnZombie(objectName, this, p);
+        Zombie zombie = ZombieFactory.spawnZombie(objectName, this, p);
         
         // si nos devuelve null entonces el objectName no corresponde al de un zombie
         if (zombie != null) {
@@ -185,16 +203,16 @@ public class Game implements GameStatus, GameWorld, GameModel {
     public boolean isInBoardLimit(Position p) {
     	boolean limit = false;
     	if (p != null) {
-    		limit = p.column() == -1 || p.column() == Game.NUM_COLS;
+    		limit = p.column() >= -1 && p.column() <= Game.NUM_COLS && p.row() >= 0 && p.row() < NUM_ROWS;
     	}
     	return limit;
     }
     
-    @Override
+
     public boolean isValidPosition(Position p) {
     	boolean valid = false;
     	if (p != null) {
-    		valid = isInsideBoard(p) || isInBoardLimit(p);
+    		valid = isInsideBoard(p) && isEmpty(p);
     	}
     	return valid;
     }
@@ -236,12 +254,12 @@ public class Game implements GameStatus, GameWorld, GameModel {
 
     @Override
     public boolean hasGameFinished() {
-        return playerQuits || playerWins() || container.doZombieReachedTheHouse();
+        return playerQuits || playerWins() || doZombiesReachedTheHouse();
     }
     
     @Override
     public boolean doZombiesReachedTheHouse() {
-    	return container.doZombieReachedTheHouse();
+    	return container.anyInColumn(-1);
     }
     
     @Override
@@ -269,41 +287,39 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		Sun newSun = new Sun(spawnPos, this);
 		
 		if (addGameObject(newSun)) {
-			generateCoins(Sun.SUNCOINS);
+			generatedCoins++;
 		}
     }
     
     @Override
     public boolean catchObject(Position p) {
-    	GameItem objectInPosition = container.getGameItemInPosition(p);
-    	
-    	boolean catched = objectInPosition.catchObject();
-    	
-    	if (catched) {
-    		caughtCoins++;
-    		container.removeDead();
+    	boolean caught = false;
+    	if (!caughtSun && isInsideBoard(p)) {
+    		int collectedSuns = container.catchObject(p);
+        	if (collectedSuns > 0) {
+        		caughtSun = true;
+        		caughtCoins += collectedSuns;
+            	caught = true;
+        	}
+
     	}
     	
-    	return catched;
+    	return caught;
+    	
     }
     
     @Override
     public boolean plantAttack(Position p, int damage) {
-    	GameItem objectInPosition = container.getGameItemInPosition(p);
-    	
-    	return objectInPosition.receivePlantAttack(damage);
+    	return container.plantAttack(p, damage);
     }
     
     @Override
 	public boolean zombieAttack(Position p, int damage) {
-    	GameItem objectInPosition = container.getGameItemInPosition(p);
-    	
-    	return objectInPosition.receiveZombieAttack(damage);
+    	return container.zombieAttack(p, damage);
     }
     
     @Override
     public void generateCoins(int coins) {
-    	generatedCoins += coins;
     	suncoins += coins;
     }
     

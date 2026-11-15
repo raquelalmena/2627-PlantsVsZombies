@@ -15,7 +15,6 @@ public interface GameWorld {
 	boolean isEmpty(Position p);//si casilla vacía
 	boolean isInsideBoard(Position p);//si posición válida dentro del tablero
 	boolean isInBoardLimit(Position p);
-	boolean isValidPosition(Position p);
 	Position randomPosition();
 	void generateSun();
 	void generateCoins(int coins);

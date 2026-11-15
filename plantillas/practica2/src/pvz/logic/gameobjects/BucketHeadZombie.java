@@ -4,7 +4,7 @@ import utils.Position;
 import pvz.logic.GameWorld;
 import pvz.view.Messages;
 
-public class BucketHeadZombie extends Zombies {
+public class BucketHeadZombie extends Zombie {
 	public static final int DAMAGE = 1;
 	public static final int ENDURANCE = 8;
 	public static final int SPEED = 4;
@@ -28,7 +28,7 @@ public class BucketHeadZombie extends Zombies {
 	}
 	
 	@Override
-	public Zombies copy(Position p, GameWorld gameWorld) {
+	public Zombie copy(Position p, GameWorld gameWorld) {
 		return new BucketHeadZombie(p, gameWorld);
 	}
 }

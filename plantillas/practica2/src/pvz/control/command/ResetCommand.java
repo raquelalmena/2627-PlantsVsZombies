@@ -14,6 +14,7 @@ public class ResetCommand extends Command {
 	private long seed;
 	
 	boolean resetAll;
+	private String errorMessage;
 	
 	public ResetCommand() {
 		super (
@@ -32,40 +33,45 @@ public class ResetCommand extends Command {
 		this.resetAll = true;
 	}
 	
+	private ResetCommand(String errorMessage) {
+		this();
+		this.errorMessage = errorMessage;
+	}
+	
 	@Override
-	public Command create(String[] c) {
-		Command command = null;
-		if (c == null || (c.length != 1 && c.length != 3)) {
-			command =  null;
+	public Command create(String[] c) {		
+		if (c.length == 1) {
+			return new ResetCommand();
 		}
 		
-		if (c.length == 1) {
-			command = new ResetCommand();
-		}
-		else if (c.length == 3) {
+		if (c.length == 3) {
 			Level l = Level.valueOfIgnoreCase(c[1]);
-			if (l == null) {
-				return null;
-			}
 			
 			// leemos seed se la cadena de String[] c
 			Scanner seedScanner = new Scanner(c[2]);
-			if (!seedScanner.hasNextLong()) {
+			
+			if (l == null || !seedScanner.hasNextLong()) {
 				seedScanner.close();
-				return null;
+				return new ResetCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 			}
 			
 			// creamos una variable de tipo long que almacene seed
 			long new_seed = seedScanner.nextLong();
 			seedScanner.close();
 			
-			command =  new ResetCommand(l, new_seed);
+			return new ResetCommand(l, new_seed);
 		}
-		return command;
+		
+		return new ResetCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	}
 	
 	@Override
 	public void execute(GameModel gm, GameView gv) {
+		if (errorMessage != null) {
+			gv.showError(errorMessage);
+			return;
+		}
+		
 		if (resetAll) {
 			gm.reset(level, seed);
 		}

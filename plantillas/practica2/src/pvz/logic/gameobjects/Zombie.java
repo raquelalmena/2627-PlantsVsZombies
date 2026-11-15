@@ -4,36 +4,42 @@ import pvz.logic.GameWorld;
 import pvz.view.Messages;
 import utils.Position;
 
-public abstract class Zombies extends GameObject{
+public abstract class Zombie extends GameObject{
 	private int damage;
 	private int endurance;
+	private int totalEndurance;
 	private int speed;
 	
 	private int cycles;
 	
-	Zombies(int damage, int endurance, int speed) {
+	Zombie(int damage, int endurance, int speed) {
 		this.damage = damage;
 		this.endurance = endurance;
 		this.speed = speed;
+		this.cycles = 0;
+		this.totalEndurance = endurance;
 	}
 	
-	Zombies(GameWorld game, Position p, int damage, int endurance, int speed) {
+	Zombie(GameWorld game, Position p, int damage, int endurance, int speed) {
 		super(game, p);
 		this.damage = damage;
 		this.endurance = endurance;
 		this.speed = speed;
+		this.cycles = 0;
+		this.totalEndurance = endurance;
 	}
 	
 	public abstract String getName();
+	public abstract String getSymbol();
 	
 	@Override
 	public String getIcon() {
 		return String.format(Messages.GAME_OBJECT_ICON, getSymbol(), endurance);
 	}
 	
-	@Override
+	
 	public String getDescription() {
-		return String.format(Messages.ZOMBIE_DESCRIPTION, getSymbol(), speed, damage, endurance);
+		return String.format(Messages.ZOMBIE_DESCRIPTION, getName(), speed, damage, totalEndurance);
 	}
 	
 	@Override
@@ -52,12 +58,28 @@ public abstract class Zombies extends GameObject{
 	@Override
 	public void update() {
 		if (isAlive()) {
-			Position posibleAttack = this.getPosition().left();
-			if (!this.game.zombieAttack(posibleAttack, damage) && cycles == speed) {
-				this.position = posibleAttack;
-				cycles = 0;
+			
+			Position nextPos = position.left();
+			
+			if (game.isEmpty(nextPos)) {
+				if (cycles == speed) {
+					this.position = nextPos;
+					cycles = 1;
+				}
+				else {
+					cycles++;
+				}
+
 			}
-			cycles++;
+			else {
+				if (cycles < speed){
+					cycles++;
+				}
+				
+				game.zombieAttack(nextPos, damage);
+			}
+			
+			
 		}
 	}
 	
@@ -72,7 +94,7 @@ public abstract class Zombies extends GameObject{
 		return true;
 	}
 	
-	public abstract Zombies copy(Position p,GameWorld gameWorld);
+	public abstract Zombie copy(Position p,GameWorld gameWorld);
 	
 	@Override
 	public boolean canShareCell() {
@@ -80,12 +102,12 @@ public abstract class Zombies extends GameObject{
 	}
 	
 	@Override
-	public boolean catchObject() {
+	public boolean catchObject(Position p) {
 		return false;
 	}
 	
 	@Override
 	public boolean canBeSpawnedAt(Position p) {
-		return game.isInBoardLimit(p) && game.isEmpty(p);
+		return (game.isInsideBoard(p) || game.isInBoardLimit(p)) && game.isEmpty(p);
 	}
 }

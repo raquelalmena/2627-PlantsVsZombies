@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import pvz.logic.GameWorld;
 import pvz.logic.gameobjects.BucketHeadZombie;
-import pvz.logic.gameobjects.Zombies;
+import pvz.logic.gameobjects.Zombie;
 import utils.Position;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class BucketHeadZombieTest extends AbstractZombieTest {
 
     @Override
-    protected Zombies create(Position position, GameWorld world) {
+    protected Zombie create(Position position, GameWorld world) {
         return new BucketHeadZombie(position, world);
     }
 

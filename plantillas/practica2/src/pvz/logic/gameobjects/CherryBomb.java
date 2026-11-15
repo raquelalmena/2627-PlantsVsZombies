@@ -15,16 +15,16 @@ public class CherryBomb extends Plant{
 	private int cycles;
 	
 	public CherryBomb() {
-		super(COST, ENDURANCE, DAMAGE);
+		super(COST, ENDURANCE, EXPLOSION_DAMAGE);
 	}
 	
 	public CherryBomb(Position p,  GameWorld gameWorld) {
-		super(gameWorld, p, COST, ENDURANCE, DAMAGE);
+		super(gameWorld, p, COST, ENDURANCE, EXPLOSION_DAMAGE);
 	}
 	
 	@Override
 	public String getSymbol() {
-		if (cycles == EXPLOSION_CYCLES - 1) {
+		if (cycles == EXPLOSION_CYCLES) {
 			return Messages.CHERRY_BOMB_SYMBOL.toUpperCase();
 		}
 		else {
@@ -43,23 +43,6 @@ public class CherryBomb extends Plant{
 	}
 	
 	@Override
-	public void onExit() {
-		Position[] positions = {
-				this.position.up(),
-				this.position.upRight(),
-				this.position.upLeft(),
-				this.position.right(),
-				this.position.left(),
-				this.position.down(),
-				this.position.downRight(),
-				this.position.downLeft()
-		};
-		super.onExit();
-		game.pushAction(new ExplosionAction(EXPLOSION_DAMAGE,true, positions));
-		endurance = 0;
-	}
-	
-	@Override
 	public Plant copy(Position p, GameWorld gameWorld) {
 		return new CherryBomb(p, gameWorld);
 	}
@@ -69,8 +52,20 @@ public class CherryBomb extends Plant{
 		if (isAlive()) {
 			cycles++;
 			
-			if (cycles == EXPLOSION_CYCLES) {
-				this.onExit();
+			if (cycles == EXPLOSION_CYCLES + 1) {
+				Position[] positions = {
+						this.position.up(),
+						this.position.upRight(),
+						this.position.upLeft(),
+						this.position.right(),
+						this.position.left(),
+						this.position.down(),
+						this.position.downRight(),
+						this.position.downLeft()
+				};
+				
+				game.pushAction(new ExplosionAction(EXPLOSION_DAMAGE,true, positions));
+				endurance = 0;
 				cycles = 0;
 			}
 		}

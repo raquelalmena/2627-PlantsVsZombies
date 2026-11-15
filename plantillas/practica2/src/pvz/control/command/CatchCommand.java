@@ -2,12 +2,15 @@ package pvz.control.command;
 import java.util.Scanner;
 
 
+import utils.Position;
 import pvz.logic.*;
 import pvz.view.*;
 
 public class CatchCommand extends Command{
 	private int col;
 	private int row;
+	
+	private String errorMessage;
 	
 	public CatchCommand() {
 		super(
@@ -24,12 +27,21 @@ public class CatchCommand extends Command{
 		this.row = r;
 	}
 	
+	private CatchCommand(String errorMessage) {
+		this();
+		this.errorMessage = errorMessage;
+	}
+	
 	
 	@Override
 	public Command create(String[] c) {
 		// comprobamos que String[] c tenga 3 elementos, los que necesita CatchCommand
-		if (c.length != 3) {
-			return null;
+		if (c.length < 3) {
+			return new CatchCommand(Messages.COMMAND_PARAMETERS_MISSING);
+		}
+		
+		if (c.length > 3) {
+			return new CatchCommand(Messages.INVALID_COMMAND);
 		}
 		
 		// leemos la columna y la fila de String[] c
@@ -40,7 +52,7 @@ public class CatchCommand extends Command{
 		if (!colScanner.hasNextInt() || !rowScanner.hasNextInt()) {
 			colScanner.close();
 			rowScanner.close();
-			return null;
+			return new CatchCommand(Messages.INVALID_COMMAND);
 		}
 		
 		// creamos variables y almacenamos los valores enteros
@@ -55,6 +67,21 @@ public class CatchCommand extends Command{
 	
 	@Override
 	public void execute(GameModel gm, GameView gv) {
-		// ...
+		if (errorMessage != null) {
+			gv.showError(errorMessage);
+			return;
+		}
+		
+		Position pos = new Position(row, col);
+		
+		if (!gm.isInsideBoard(pos)) {
+			gv.showError(Messages.INVALID_POSITION);
+		}
+		else if (!gm.catchObject(pos)) {
+			gv.showError(String.format(Messages.NO_CATCHABLE_IN_POSITION, col, row));
+		}
+		else {
+			gv.showGame();
+		}
 	}
 }

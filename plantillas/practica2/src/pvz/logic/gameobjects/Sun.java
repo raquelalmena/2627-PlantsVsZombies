@@ -20,7 +20,7 @@ public class Sun extends GameObject {
 		this.endurance = ENDURANCE;
 	}
 	
-	@Override
+
 	public String getSymbol() {
 		return Messages.SUN_SYMBOL;
 	}
@@ -30,7 +30,6 @@ public class Sun extends GameObject {
 		return String.format(Messages.GAME_OBJECT_ICON, getSymbol(), endurance);
 	}
 	
-	@Override
 	public String getDescription() {
 		return String.format(Messages.SUN_DESCRIPTION);
 	}
@@ -74,7 +73,12 @@ public class Sun extends GameObject {
 	}
 	
 	@Override
-	public boolean catchObject() {
-		return true;
+	public boolean catchObject(Position p) {
+		if (isAlive() && isInPosition(p)) {
+			game.generateCoins(SUNCOINS);
+			endurance = 0;
+			return true;
+		}
+		return false;
 	}
 }

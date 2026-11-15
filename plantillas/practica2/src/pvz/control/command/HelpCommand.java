@@ -7,6 +7,7 @@ import pvz.view.GameView;
 import pvz.view.Messages;
 
 public class HelpCommand extends Command {
+	private String errorMessage;
 	
 	public HelpCommand() {
 		super (
@@ -15,10 +16,27 @@ public class HelpCommand extends Command {
 			Messages.COMMAND_HELP_DETAILS,
 			Messages.COMMAND_HELP_HELP
 		);
-	  }
+	}
+	
+	private HelpCommand(String errorMessage) {
+		this();
+		this.errorMessage = errorMessage;
+	}
+	
+	@Override
+	public Command create(String[] c) {
+	    if (c.length != 1) {
+	        return new HelpCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+	    }
+	    return this;
+	}
 	
 	@Override
 	public void execute(GameModel gm, GameView gv) { 
+		if (errorMessage != null) {
+			gv.showError(errorMessage);
+			return;
+		}
 		List<String> lines = new ArrayList<>();//creo la lista vacía para guardar las líneas de ayuda
         lines.add(Messages.HELP_AVAILABLE_COMMANDS);//añade la primera línea. 'título'
         // Recorremos los comandos para construir la ayuda dinámica

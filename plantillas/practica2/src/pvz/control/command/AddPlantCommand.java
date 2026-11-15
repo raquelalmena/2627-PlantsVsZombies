@@ -1,5 +1,5 @@
 package pvz.control.command;
-//import java.util.Scanner;//está Integer.parseInt()
+import java.util.Scanner;
 import pvz.logic.GameModel;
 import pvz.view.GameView; 
 import pvz.view.Messages;
@@ -9,6 +9,8 @@ public class AddPlantCommand extends Command{//extends por la herencia de la sup
 	private String plantName;
 	private int col;
 	private int row;
+	
+	private String errorMessage;
 	
 	//constructora sin parámetros . se usa para registrarlo en AVAILABlE_COMANDS
 	public AddPlantCommand() {
@@ -29,31 +31,54 @@ public class AddPlantCommand extends Command{//extends por la herencia de la sup
 		this.row = r;
 	}
 	
+	private AddPlantCommand(String errorMessage) {
+		this();
+		this.errorMessage = errorMessage;
+	}
+	
 	//propuesta create sin scanner. 
 	//pq enunciado: *En el caso de que los argumentos introducidos por el usuario no sean válidos para el comando, 
 	//el método* *create(String[])* *devolverá un comando con un mensaje de error*
 
 	@Override //pq sobreescribimos el método create heredado de Command
 	public Command create(String[] c) { 
-		Command create = null;
-		// Si c no tiene cuatro elementos 
-		if (c.length == 4 && c != null) { //me acabo de acordar, era solo un return por método, no?
-			String plantName = c[1];
-			//try-catch para convertir texto de col, row a enteros
-			//en try código que puede fallar, en catch(tipo de error) solución al error
-			try {
-				int col = Integer.parseInt(c[2]);
-				int row = Integer.parseInt(c[3]);
-				create = new AddPlantCommand(plantName, col, row);
-			} catch (NumberFormatException e) {
-				create = null;
-			}
-		}		
-		return create;
+		
+		if (c.length < 4) {
+			return new AddPlantCommand(Messages.COMMAND_PARAMETERS_MISSING);
+		}
+		
+		if (c.length > 4) {
+			return new AddPlantCommand(Messages.INVALID_COMMAND);
+		}
+		
+		String pN = c[1];
+		
+		Scanner colScanner = new Scanner(c[2]);
+		Scanner rowScanner = new Scanner(c[3]);
+		
+		if (!colScanner.hasNextInt() || !rowScanner.hasNextInt()) {
+			colScanner.close();
+			rowScanner.close();
+			return new AddPlantCommand(Messages.INVALID_COMMAND);
+		}
+		
+		int col = colScanner.nextInt();
+		int row = rowScanner.nextInt();
+		
+		colScanner.close();
+		rowScanner.close();
+		
+		return new AddPlantCommand(pN, col, row);
 	}
 	
 	@Override
 	public void execute(GameModel gm, GameView gv) {
+		if (errorMessage != null) {
+			gv.showError(errorMessage);
+			return;
+		}
+		
+		
 		Position pos = new Position(row, col);
 	
 		//si los parámetros están mal escritos

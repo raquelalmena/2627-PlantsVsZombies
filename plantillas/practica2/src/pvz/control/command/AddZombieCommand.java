@@ -9,6 +9,8 @@ public class AddZombieCommand extends Command {
 	private int row;
 	private int col;
 	
+	private String errorMessage;
+	
 	public AddZombieCommand() {
 		super(
 				Messages.COMMAND_ADD_ZOMBIE_NAME,
@@ -26,11 +28,20 @@ public class AddZombieCommand extends Command {
 		this.row = r;
 	}
 	
+	private AddZombieCommand(String errorMessage) {
+		this();
+		this.errorMessage = errorMessage;
+	}
+	
 	@Override
 	public Command create(String[] c) {
 		// Comprobamos que la cadena de caracteres tiene 4 elementos
-		if (c.length != 4) {
-			return null;
+		if (c.length < 4) {
+			return new AddZombieCommand(Messages.COMMAND_PARAMETERS_MISSING);
+		}
+		
+		if (c.length > 4) {
+			return new AddZombieCommand(Messages.INVALID_COMMAND);
 		}
 		
 		String zN = c[1];
@@ -42,7 +53,7 @@ public class AddZombieCommand extends Command {
 		if (!colScanner.hasNextInt() || !rowScanner.hasNextInt()) {
 			colScanner.close();
 			rowScanner.close();
-			return null;
+			return new AddZombieCommand(Messages.INVALID_COMMAND);
 		}
 		
 		// creamos variables de tipo int que almacenan los valores de columna y fila leídos en String[] c
@@ -57,6 +68,11 @@ public class AddZombieCommand extends Command {
 	
 	@Override
 	public void execute(GameModel gm, GameView gv) {
+		if (errorMessage != null) {
+			gv.showError(errorMessage);
+			return;
+		}
+		
 		Position pos = new Position(row, col);
 		
 		// si los parámetros están mal escritos

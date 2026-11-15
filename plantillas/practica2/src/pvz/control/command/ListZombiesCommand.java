@@ -1,11 +1,13 @@
 package pvz.control.command;
 import pvz.logic.GameModel;
 import pvz.logic.gameobjects.factories.ZombieFactory;
-import pvz.logic.gameobjects.Zombies;
+import pvz.logic.gameobjects.Zombie;
 import java.util.List;
 import pvz.view.*;
 
 public class ListZombiesCommand extends Command{
+	private String errorMessage;
+	
 	public ListZombiesCommand() {
 		super(
 			Messages.COMMAND_LIST_ZOMBIES_NAME,
@@ -15,18 +17,28 @@ public class ListZombiesCommand extends Command{
 		);
 	}
 	
+	private ListZombiesCommand(String errorMessage) {
+		this();
+		this.errorMessage = errorMessage;
+	}
+	
 	@Override
 	public Command create(String[] c) {
 		// comprobamos que la cadena String[] c no tenga más que un elemento, el propio comando
 		if (c.length != 1) {
-			return null;
+			return new ListZombiesCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 		}
 		return this;
 	}
 	
 	@Override
 	public void execute(GameModel gm, GameView gv) {//muestra descripción de las plantas pero no avanza ciclo
-		List<Zombies> zombies = ZombieFactory.getAvailableZombies();
+		if (errorMessage != null) {
+			gv.showError(errorMessage);
+			return;
+		}
+		
+		List<Zombie> zombies = ZombieFactory.getAvailableZombies();
 		
 		String zombiesDescriptions = "";
 		
@@ -37,6 +49,8 @@ public class ListZombiesCommand extends Command{
 			
 			zombiesDescriptions += zombies.get(i).getDescription();
 		}
+		
+	zombiesDescriptions += Messages.LINE_SEPARATOR;
 		
 		gv.showMessage(zombiesDescriptions);
 	}

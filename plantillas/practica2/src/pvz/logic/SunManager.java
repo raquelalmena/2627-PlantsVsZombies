@@ -16,9 +16,9 @@ public class SunManager {
 	public void update() {
 		cycles++;
 		
-		if (cycles == FREQUENCY) {
+		if (cycles == FREQUENCY + 1) {
 			game.generateSun();
-			cycles = 0;
+			cycles = 1;
 		}
 	}
 }

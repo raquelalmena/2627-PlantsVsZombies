@@ -1,7 +1,7 @@
 package pvz;
 
 import java.util.Locale;
-import pvz.view.*;
+
 import pvz.control.Controller;
 import pvz.control.Level;
 import pvz.logic.Game;
@@ -65,8 +65,7 @@ public class PlantsVsZombies {
 		System.out.println(String.format(Messages.CONFIGURED_SEED, seed));
 
 		Game game = new Game(seed, level);
-		GameView view = new GamePrinter(game);
-		Controller controller = new Controller(game, view);
+		Controller controller = new Controller(game);
 		controller.run();
 	}
 

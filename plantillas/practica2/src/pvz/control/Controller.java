@@ -1,6 +1,8 @@
 package pvz.control;
 
 import pvz.control.command.Command;
+import pvz.logic.Game;
+import pvz.view.GamePrinter;
 import pvz.logic.GameModel;
 import pvz.view.GameView;
 import pvz.view.Messages;
@@ -25,9 +27,9 @@ public class Controller {
 	private final GameView view;
 
 	//constructora. une game (modelo)con la  gameprinter(vista)
-	public Controller(GameModel gm, GameView gv) {
-		this.game = gm;
-		this.view = gv;
+	public Controller(Game game) {
+		this.game = game;
+		this.view = new GamePrinter(game);
 	}
 
 	/**

@@ -27,18 +27,10 @@ public class Peashooter extends Plant{
 	}
 	
 	@Override
-	public String getDescription() {
-		return Messages.PEASHOOTER_DESCRIPTION;
-	}
-	
-	@Override
 	 public void update() {
 		 if (isAlive()) {
-			 Position possibleAttack = this.getPosition().right();
-			 
-			 while (game.isInsideBoard(possibleAttack) && !this.game.plantAttack(possibleAttack, DAMAGE)) {
-				 possibleAttack = possibleAttack.right();
-			 }
+			 // Position nextPos = position.right();
+			 game.plantAttack(position, DAMAGE);
 		 }
 	 }
 	

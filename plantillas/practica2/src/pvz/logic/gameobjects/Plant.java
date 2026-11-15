@@ -7,6 +7,7 @@ import utils.Position;
 public abstract class Plant extends GameObject{
 	 private int cost;
 	 protected int endurance;
+	 private int totalEndurance;
 	 private int damage;
 
 	 Plant(int cost, int endurance, int damage) {
@@ -14,6 +15,7 @@ public abstract class Plant extends GameObject{
 		 this.cost = cost;
 		 this.endurance = endurance;
 		 this.damage = damage;
+		 this.totalEndurance = endurance;
 	 }
 	 
 	 Plant(GameWorld game, Position p, int cost, int endurance, int damage) {
@@ -21,10 +23,12 @@ public abstract class Plant extends GameObject{
 		 this.cost = cost;
 		 this.endurance = endurance;
 		 this.damage = damage;
+		 this.totalEndurance = endurance;
 	 }
 	 
 	 public abstract String getNameAndShortcut();
 	 public abstract String getName();
+	 public abstract String getSymbol();
 	 
 	 @Override
 	 public String getIcon() {
@@ -33,10 +37,9 @@ public abstract class Plant extends GameObject{
 		 return String.format(Messages.GAME_OBJECT_ICON, getSymbol(), enduranceAux);
 	 }
 	 
-	 @Override
-	 public String getDescription() {
-		 return String.format(Messages.PLANT_DESCRIPTION, getNameAndShortcut(), cost, damage, endurance);
-	 }
+	public String getDescription() {
+		return String.format(Messages.PLANT_DESCRIPTION, getNameAndShortcut(), cost, damage, totalEndurance);
+	}
 	 
 	 @Override
 	 public boolean isAlive() {
@@ -85,7 +88,7 @@ public abstract class Plant extends GameObject{
 	 }
 	 
 	 @Override
-	 public boolean catchObject() {
+	 public boolean catchObject(Position p) {
 		 return false;
 	 }
 }

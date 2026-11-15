@@ -18,20 +18,14 @@ public abstract class GameObject implements GameItem {
 	}
 	
 	public boolean isInPosition(Position other) {
-		boolean isInPosition = false;
-        if (other != null && this.position != null) isInPosition = this.position.equals(other);
-        return isInPosition;	
+        return this. position.equals(other);	
 	}
 	
 	public Position getPosition() {
 		return position;
 	}
 	
-	public abstract String getSymbol();
-	
 	public abstract String getIcon();
-	
-	public abstract String getDescription();
 	
 	public abstract boolean isAlive();
 	

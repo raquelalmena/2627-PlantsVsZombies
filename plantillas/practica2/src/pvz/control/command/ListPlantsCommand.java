@@ -9,6 +9,7 @@ import pvz.logic.gameobjects.Plant;
 import pvz.logic.gameobjects.factories.PlantFactory;
 
 public class ListPlantsCommand extends Command{
+	private String errorMessage;
 	
 	public ListPlantsCommand() {
 		super (//invoca a la constructora de Command (superclase)
@@ -19,17 +20,28 @@ public class ListPlantsCommand extends Command{
 		);
 	}
 	
+	private ListPlantsCommand(String errorMessage) {
+		this();
+		this.errorMessage = errorMessage;
+	}
+	
 	@Override
 	public Command create(String[] c) {
 		// comprobamos que la cadena String[] c no tenga más que un elemento, el propio comando
 		if (c.length != 1) {
-			return null;
+			return new ListPlantsCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 		}
 		return this;
 	}
+	
 
 	@Override
 	public void execute(GameModel gm, GameView gv) {//muestra descripción de las plantas pero no avanza ciclo
+		if (errorMessage != null) {
+			gv.showError(errorMessage);
+			return;
+		}
+		
 		List<Plant> plants = PlantFactory.getAvailablePlants();
 		
 		String plantDescriptions = "";
@@ -42,30 +54,9 @@ public class ListPlantsCommand extends Command{
 			plantDescriptions += plants.get(i).getDescription();
 		}
 		
+		plantDescriptions += Messages.LINE_SEPARATOR;
+		
 		gv.showMessage(plantDescriptions);
-		
-		/*
-		List<String> plantDescriptions = new ArrayList<>();
-		List<Plant> plants = PlantFactory.getAvailablePlants();
-		
-		for (int i = 0; i < plants.size(); i++) {
-			String description = plants.get(i).getDescription();
-			plantDescriptions.add(description);
-		}
-		
-		gv.showMessage(String.join(Messages.LINE_SEPARATOR, plantDescriptions));
-		
-		
-		List<String> plantsDescription = new ArrayList<>();
- 
-        // Obtenemos las descripciones de las plantas registradas en la factoría
-        for (Plant plant : PlantFactory.getAvailablePlants()) {
-            plantsDescription.add(plant.getDescription());
-        }
-        
-        // Muestra la lista formateada
-        gv.showMessage(String.join(Messages.LINE_SEPARATOR, plantsDescription));
-    	*/
     }	
 	
 }

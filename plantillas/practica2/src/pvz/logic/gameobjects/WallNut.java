@@ -33,7 +33,8 @@ public class WallNut extends Plant {
 	}
 	
 	@Override
-	public void update() {}
+	public void update() {
+	}
 	
 	@Override
 	public Plant copy(Position p,  GameWorld gameWorld) {

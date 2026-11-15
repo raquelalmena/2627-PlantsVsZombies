@@ -3,7 +3,7 @@ package pvz.logic;
 import java.util.Random;
 import java.util.List;
 import pvz.control.Level;
-import pvz.logic.gameobjects.Zombies;
+import pvz.logic.gameobjects.Zombie;
 import pvz.logic.gameobjects.factories.ZombieFactory;
 import utils.Position;
 
@@ -58,7 +58,7 @@ public class ZombieManager {
 		
 		String zombieName = randomZombieName();
 		
-		Zombies newZombie = ZombieFactory.spawnZombie(zombieName, game, spawnPos);
+		Zombie newZombie = ZombieFactory.spawnZombie(zombieName, game, spawnPos);
 
 		// si se ha podido añadir el Zombie entonces restamos el número de zombies que faltan
 		if (newZombie != null && game.addGameObject(newZombie)) {
@@ -68,7 +68,7 @@ public class ZombieManager {
 	
 	private String randomZombieName() {
 		// Obtenemos la lista de Zombies disponibles
-		List<Zombies> zombiesList = ZombieFactory.getAvailableZombies();
+		List<Zombie> zombiesList = ZombieFactory.getAvailableZombies();
 		// Elegimos una posición de la lista aleatoria para obtener un zombie aleatorio
 		int randomListPos = rand.nextInt(zombiesList.size());
 		

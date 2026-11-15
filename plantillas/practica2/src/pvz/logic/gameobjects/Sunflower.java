@@ -24,11 +24,11 @@ public class Sunflower extends Plant{
 	@Override
 	public void update() {
 		if (isAlive()) {
-			cycles++;
 			if (cycles == PERIOD) {
-				game.generateSun();//2.1 añade un Sun directamente al jugador
+				game.generateSun();
 				cycles = 0;
 			}
+			cycles++;
 		}
 	}
 	

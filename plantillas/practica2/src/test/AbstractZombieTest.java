@@ -3,7 +3,7 @@ package test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pvz.logic.GameWorld;
-import pvz.logic.gameobjects.Zombies;
+import pvz.logic.gameobjects.Zombie;
 import test.FakeGameWorld.Attack;
 import utils.Position;
 
@@ -22,9 +22,9 @@ abstract class AbstractZombieTest {
     protected static final Position START = new Position(0, 5);
 
     protected FakeGameWorld world;
-    protected Zombies zombie;
+    protected Zombie zombie;
 
-    protected abstract Zombies create(Position position, GameWorld world);
+    protected abstract Zombie create(Position position, GameWorld world);
 
     /** Name shown by the {@code listZombies} command. */
     protected abstract String expectedName();
@@ -209,7 +209,7 @@ abstract class AbstractZombieTest {
     void copy_createsAFreshZombieOfTheSameKind() {
         zombie.receivePlantAttack(1);
         Position other = new Position(2, 7);
-        Zombies copy = zombie.copy(other, world);
+        Zombie copy = zombie.copy(other, world);
 
         assertNotSame(zombie, copy);
         assertTrue(copy.isInPosition(other));

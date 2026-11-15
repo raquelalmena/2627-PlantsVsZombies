@@ -1,9 +1,9 @@
 package pvz.logic;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
-import pvz.logic.gameobjects.GameItem;
 import pvz.logic.gameobjects.GameObject;
 import pvz.view.Messages;
 import utils.Position;
@@ -16,108 +16,52 @@ public class GameObjectContainer {
 		gameObjects = new ArrayList<>();
 	}
 	
-	public GameItem getGameItemInPosition(Position position) {
-		GameItem sol = null;
-		boolean found = false;
+	public void add(GameObject o) {
+		if (o != null) {
+			this.gameObjects.add(o);
+			o.onEnter();
+		}
+	}
+	
+	public void update() {
+        for (int i = 0; i < gameObjects.size(); i++) {
+        	if(gameObjects.get(i).isAlive()) {
+            	gameObjects.get(i).update();
+        	}
+        }
+    }
+
+	public String positionToString(Position p) {
+		String c = Messages.EMPTY_STRING;
+        
+        
+        for (int i = 0; i < gameObjects.size(); i++) {
+            GameObject objectAct = gameObjects.get(i);
+            if (objectAct.isAlive() && objectAct.isInPosition(p)) {
+                c += objectAct.getIcon();
+            }
+        }
+        
+        return c;
+    }
+	
+	public boolean removeDead() {
+		boolean removed = false;
 		int pos = 0;
 		
-		while (!found && pos < gameObjects.size()) {
-			GameObject object_actual = gameObjects.get(pos);
-			
-			if (object_actual.isInPosition(position)) {
-				found = true;
-				sol = object_actual;
+		
+		while (pos < gameObjects.size()) {
+			if (!gameObjects.get(pos).isAlive()) {
+				gameObjects.get(pos).onExit();
+				gameObjects.remove(pos);
+				removed = true;
 			}
 			else {
 				pos++;
 			}
 		}
 		
-		return sol;
-	}
-	
-	public void add(GameObject o) {
-		if (o != null) this.gameObjects.add(o);
-	}
-	
-	public void update() {
-        for (int i = 0; i < gameObjects.size(); i++) {
-        	gameObjects.get(i).update();
-        }
-        removeDead();
-    }
-
-	public String positionToString(Position p) {
-		String c = Messages.EMPTY_STRING;
-        boolean found = false;
-        int i = 0;
-        
-        while (!found && i < gameObjects.size()) {
-            GameObject objectAct = gameObjects.get(i);
-            if (objectAct.isInPosition(p) && objectAct.isAlive()) {
-                c = objectAct.getIcon();
-                found = true;
-            } else i++;
-        }
-        return c;
-    }
-	
-	public boolean removeDead() {
-		boolean removed = false;
-		for (int i = 0; i < gameObjects.size(); i++) {
-			if (!gameObjects.get(i).isAlive()) {
-				gameObjects.get(i).onExit();
-				gameObjects.remove(i);
-				removed = true;
-			}
-		}
-		
 		return removed;
-	}
-	
-	public boolean receiveDamage(Position p, int damage) {
-		boolean attacked = false;
-		boolean found = false;
-		int pos = 0;
-		while (!found && pos < gameObjects.size()) {
-			GameObject objectAct = gameObjects.get(pos);
-			if (objectAct.getPosition().equals(p)) {
-				found = true;
-				attacked = objectAct.receiveZombieAttack(damage) && objectAct.receivePlantAttack(damage);
-			}
-		}
-		return attacked;
-	}
-	
-	
-	public String iconInPosition(Position p) {
-		String icon = Messages.EMPTY_STRING;
-		boolean found = false;
-		int pos = 0;
-		
-		while (!found && pos < gameObjects.size()) {
-			GameObject objectAct = gameObjects.get(pos);
-			if (objectAct.getPosition().equals(p)) {
-				found = true;
-				icon = objectAct.getIcon();
-			}
-		}
-		
-		return icon;
-	}
-	
-	public boolean doZombieReachedTheHouse() {
-		boolean reach = false;
-		int pos = 0;
-		
-		while (!reach && pos < gameObjects.size()) {
-			GameObject objectAct = gameObjects.get(pos);
-			if (objectAct.getPosition().column() < 0) {
-				reach = true;
-			}
-		}
-		
-		return reach;
 	}
 	
 	public boolean isPositionEmpty(Position p) {
@@ -133,7 +77,64 @@ public class GameObjectContainer {
 		return !found;
 	}
 	
-	public anyIncolumn(Position p) {
+	public boolean anyInColumn(int column) {
+		int pos = 0;
+		boolean found = false;
 		
+		while (!found && pos < gameObjects.size()) {
+			GameObject gameObject= gameObjects.get(pos);
+			found = gameObject.isAlive() && gameObject.getPosition().column() == column;
+			pos++;
+		}
+		
+		return found;
+	}
+	
+	public int catchObject(Position p) {
+		int numCought = 0;
+		
+		for (int i = 0; i < gameObjects.size(); i++) {
+			GameObject gameObject= gameObjects.get(i);
+			if (gameObject.isAlive() && gameObject.catchObject(p)) {
+				numCought++;
+			}
+		}
+		
+		return numCought;
+	}
+	
+	public boolean plantAttack(Position p, int damage) {
+		boolean attacked = false;
+		int col = p.column();
+		
+		while (!attacked && col < GameWorld.NUM_COLS) {
+			Position nextPos = new Position(p.row(), col);
+			for (int i = 0; i < gameObjects.size(); i++) {
+				GameObject gameObject= gameObjects.get(i);
+				if (!attacked && gameObject.isAlive() && gameObject.isInPosition(nextPos)) {
+					attacked = gameObject.receivePlantAttack(damage);
+				}
+			}
+			col++;
+			
+		}
+		
+		return attacked;
+	}
+	
+	public boolean zombieAttack(Position p, int damage) {
+		int pos = 0;
+		boolean found = false;
+		
+		while (!found && pos < gameObjects.size()) {
+			GameObject gameObject= gameObjects.get(pos);
+			if (gameObject.isAlive() && gameObject.isInPosition(p)) {
+				found = gameObject.receiveZombieAttack(damage);
+			}
+			
+			pos++;
+		}
+		
+		return found;
 	}
 }

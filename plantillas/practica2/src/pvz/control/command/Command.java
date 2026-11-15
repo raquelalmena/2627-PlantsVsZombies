@@ -15,16 +15,16 @@ public abstract class Command {
 
 	protected static final List<Command> AVAILABLE_COMMANDS = Arrays.asList(
 	    new AddPlantCommand(),
-	    new AddZombieCommand(), 
+	    new AddZombieCommand(),
+	    new AddPlantCheatCommand(),
+	    new CatchCommand(),
 	    new ListPlantsCommand(),
 	    new ListZombiesCommand(),
 	    new ResetCommand(),
 	    new HelpCommand(),
 	    new ExitCommand(),
-	    new UpdateCommand(),
-	    new AddPlantCheatCommand(),
-	    new CatchCommand(),
-	    new UnknownCommand()
+	    new UpdateCommand()
+
 	  );
 	  
 	  //constructora
@@ -46,7 +46,9 @@ public abstract class Command {
 			  while (com == null && i < AVAILABLE_COMMANDS.size()) {
 				  Command command = AVAILABLE_COMMANDS.get(i);
 				//si la primera palabra (commandWords[0])coincide con el nombre del comando i:
-				  if (command.matchCommand(commandWords[0])) com = command.create(commandWords); //com == null es falsa y para el bucle
+				  if (command.matchCommand(commandWords[0])) {
+					  com = command.create(commandWords); //com == null es falsa y para el bucle
+				  }
 				  i++;
 			  }
 		  }
@@ -65,9 +67,8 @@ public abstract class Command {
 	  }
 	  
 	  public Command create(String[] c) {//para no tener que implementar create en todos los comandos
-		  Command create = null;
-		  if (c != null && c.length == 1) create = this;
-		  return create;
+		  return this;
+		  
 	  }
 	  
 	  public abstract void execute(GameModel gm, GameView gv);//ejecuta la acción del comando

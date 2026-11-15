@@ -14,8 +14,8 @@ public class PlantFactory {
 	private static final List<Plant> AVAILABLE_PLANTS = Arrays.asList(
 		new Sunflower(), //primer param=tablero, segundo=posición. paso null pq list no necesita esa info
 	    new Peashooter(),
-	    new CherryBomb(),
-	    new WallNut()
+	    new WallNut(),
+	    new CherryBomb()
 	);
 	
 	//crea y devuelve nueva instancia de la planta segun el nombre de planta que escribe el jugador

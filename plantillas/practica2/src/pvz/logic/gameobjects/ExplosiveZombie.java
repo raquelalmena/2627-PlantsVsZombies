@@ -5,7 +5,7 @@ import pvz.logic.actions.ExplosionAction;
 import utils.Position;
 import pvz.logic.GameWorld;
 
-public class ExplosiveZombie extends Zombies {
+public class ExplosiveZombie extends Zombie {
 	public static final int DAMAGE = 1;
 	public static final int ENDURANCE = 5;
 	public static final int SPEED = 2;
@@ -31,7 +31,7 @@ public class ExplosiveZombie extends Zombies {
 	}
 	
 	@Override
-	public Zombies copy(Position p, GameWorld gameWorld) {
+	public Zombie copy(Position p, GameWorld gameWorld) {
 		return new ExplosiveZombie(p, gameWorld);
 	}
 	
