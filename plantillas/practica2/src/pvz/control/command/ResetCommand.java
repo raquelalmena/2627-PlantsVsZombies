@@ -13,7 +13,7 @@ public class ResetCommand extends Command {
 	private Level level;
 	private long seed;
 	
-	boolean resetAll;
+	private boolean resetAll;
 	private String errorMessage;
 	
 	public ResetCommand() {
@@ -26,7 +26,7 @@ public class ResetCommand extends Command {
 		this.resetAll = false;
 	}
 	
-	public ResetCommand(Level level, long seed) {
+	private ResetCommand(Level level, long seed) {
 		this();
 		this.seed = seed;
 		this.level = level;
@@ -50,9 +50,14 @@ public class ResetCommand extends Command {
 			// leemos seed se la cadena de String[] c
 			Scanner seedScanner = new Scanner(c[2]);
 			
-			if (l == null || !seedScanner.hasNextLong()) {
+			if (l == null ) {
 				seedScanner.close();
-				return new ResetCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+				return new ResetCommand(Messages.ALLOWED_LEVELS);
+			}
+			
+			if (!seedScanner.hasNextLong()) {
+				seedScanner.close();
+				return new ResetCommand(Messages.SEED_NOT_A_NUMBER_ERROR);
 			}
 			
 			// creamos una variable de tipo long que almacene seed
