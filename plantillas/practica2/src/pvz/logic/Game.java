@@ -84,8 +84,10 @@ public class Game implements GameStatus, GameWorld, GameModel {
     	
     	// 2. Execute game Actions
 
+
         zombieManager.update();
     	sunManager.update();
+
     	
     	// 3. Game object updates
 

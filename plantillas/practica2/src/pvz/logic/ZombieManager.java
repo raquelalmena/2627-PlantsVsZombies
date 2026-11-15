@@ -39,7 +39,7 @@ public class ZombieManager {
 	 * @return <code>true</code> if a zombie should be added to the game.
 	 */
 	private boolean shouldAddZombie() {
-		return rand.nextDouble() < level.getZombieFrequency() && remainingZombies > 0;
+		return rand.nextDouble() < level.getZombieFrequency();
 	}
 	
 	/**
@@ -51,19 +51,26 @@ public class ZombieManager {
 	private int randomZombieRow() {
 		return rand.nextInt(GameWorld.NUM_ROWS);
 	}
-
-	public void addZombie() {
+	
+	private void addZombie() {
 		int row = randomZombieRow();
-		Position spawnPos = new Position(row, GameWorld.NUM_COLS);
-		
 		String zombieName = randomZombieName();
-		
-		Zombie newZombie = ZombieFactory.spawnZombie(zombieName, game, spawnPos);
+		addZombie(row, zombieName);
+	}
 
-		// si se ha podido añadir el Zombie entonces restamos el número de zombies que faltan
-		if (newZombie != null && game.addGameObject(newZombie)) {
-			remainingZombies--;
+	public void addZombie(int row, String zombieName) {
+		if (shouldAddZombie() && remainingZombies > 0) {
+			Position spawnPos = new Position(row, GameWorld.NUM_COLS);
+			
+			Zombie newZombie = ZombieFactory.spawnZombie(zombieName, game, spawnPos);
+
+			// si se ha podido añadir el Zombie entonces restamos el número de zombies que faltan
+			if (newZombie != null && game.addGameObject(newZombie)) {
+				remainingZombies--;
+			}
 		}
+		
+		
 	}
 	
 	private String randomZombieName() {
@@ -77,9 +84,7 @@ public class ZombieManager {
 	}
 	
 	public void update() {
-		if (shouldAddZombie()) {
-			addZombie();
-		}
+		addZombie();
 	}
 	
 	public int getRemainingZombies() {
