@@ -10,6 +10,7 @@ public class AddPlantCommand extends Command{//extends por la herencia de la sup
 	private int col;
 	private int row;
 	
+	
 	private String errorMessage;
 	
 	//constructora sin parámetros . se usa para registrarlo en AVAILABlE_COMANDS

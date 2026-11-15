@@ -14,8 +14,6 @@ import pvz.logic.gameobjects.Zombie;
 import pvz.control.Level;
 
 
-// FALTA RANDOM
-
 public class Game implements GameStatus, GameWorld, GameModel {
 	public static final int INITIAL_COINS = 50;
 	
@@ -27,6 +25,8 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	private int suncoins;
 	private int generatedCoins;
 	private int caughtCoins;
+	
+	// Así podemos comprobar que solo coge soles una vez por cada ciclo
 	private boolean caughtSun;
 	
 	private GameObjectContainer container;
@@ -42,7 +42,6 @@ public class Game implements GameStatus, GameWorld, GameModel {
 		reset();
 	}
 	
-	//TODO. Falta comentar lo que hace cada una auqnue sea obvio para que no nos penalice jeje:
 	
 	@Override
 	public int getCycles() {
@@ -78,14 +77,11 @@ public class Game implements GameStatus, GameWorld, GameModel {
     	executePendingActions();
     	
     	// 2. Execute game Actions
-
-
         zombieManager.update();
     	sunManager.update();
 
     	
     	// 3. Game object updates
-
         container.update();
         
         // 4. & 5. Remove dead and execute pending actions
@@ -121,7 +117,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
     public void quit() {
         this.playerQuits = true;
     }
-
+    
     @Override
     public boolean addGameObject(String objectName, Position p) {
     	// comprobamos si objectName coincide con alguno de los nombres de las plantas disponibles
