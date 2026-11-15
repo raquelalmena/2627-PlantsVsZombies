@@ -30,6 +30,8 @@ public class Peashooter extends Plant{
 		 }
 	 }
 	
+	// Aunque Peashooter tenga mensaje propio con su Icon usamos la función getIcon() de la superclase Plant
+	
 	@Override
     public String getSymbol() {
         return Messages.PEASHOOTER_SYMBOL;

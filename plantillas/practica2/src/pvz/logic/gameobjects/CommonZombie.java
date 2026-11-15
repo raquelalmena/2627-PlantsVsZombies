@@ -18,6 +18,9 @@ public class CommonZombie extends Zombie {
 		super(gameWorld, p, DAMAGE, ENDURANCE, SPEED);
 	}
 	
+	// Aunque CommonZombie tenga mensaje propio con su Icon usamos la función getIcon() de la superclase Zombie
+	
+	
 	@Override
 	public String getSymbol() {
 		return Messages.ZOMBIE_SYMBOL;

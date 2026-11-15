@@ -32,6 +32,8 @@ public class Sunflower extends Plant{
 		}
 	}
 	
+	// Aunque Sunflower tenga mensaje propio con su Icon usamos la función getIcon() de la superclase Plant
+	
 	@Override
     public String getSymbol() {
         return Messages.SUNFLOWER_SYMBOL;

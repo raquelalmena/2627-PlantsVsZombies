@@ -32,6 +32,7 @@ public abstract class Zombie extends GameObject{
 	public abstract String getName();
 	public abstract String getSymbol();
 	
+	
 	@Override
 	public String getIcon() {
 		return String.format(Messages.GAME_OBJECT_ICON, getSymbol(), endurance);
