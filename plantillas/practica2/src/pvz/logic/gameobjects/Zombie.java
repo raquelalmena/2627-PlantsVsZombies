@@ -48,9 +48,7 @@ public abstract class Zombie extends GameObject{
 	}
 	
 	@Override
-	public void onEnter() {
-		game.zombieAdded();
-	}
+	public void onEnter() {}
 	
 	@Override
 	public void onExit() {

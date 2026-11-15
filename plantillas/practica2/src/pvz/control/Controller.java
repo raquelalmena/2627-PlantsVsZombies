@@ -13,7 +13,7 @@ import pvz.view.Messages;
  * <p>Owns the game loop: reads a line from stdin, parses it into a
  * command, validates parameters (plant type, position), delegates
  * state changes to {@link Game}, and triggers a board reprint via
- * {@link pvz.view.GameView>} when the cycle advances. It holds no game
+ * {@link tp1.pvz.view.GameView>} when the cycle advances. It holds no game
  * state of its own; the source of truth is always {@link Game}.
  */
 public class Controller {
@@ -43,8 +43,9 @@ public class Controller {
 			String[] c = view.getPrompt();//declarado en game view, lee una alínea y la devuelve separada por espacios
 			Command command = Command.parse(c); //ahora es el parse() quien busca el comando que coincida con el del player						
 			//4. parse nuca devuelve null
-			command.execute(game, view);
-			//lo quito pq había dejado un else sin if
+			command.execute(game, view);//si es válido, se ejecuta
+			else view.showError(Messages.UNKNOWN_COMMAND);//si no, se muestra en pantalla el error correspondiente
+			
 		}
 		view.showEndMessage();//muestra Game over y el motivo
 	}

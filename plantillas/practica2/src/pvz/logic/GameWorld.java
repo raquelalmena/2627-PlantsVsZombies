@@ -19,7 +19,6 @@ public interface GameWorld {
 	void generateSun();
 	void generateCoins(int coins);
 	
-	void zombieAdded();
 	void zombieKilled();
 	
 	boolean plantAttack(Position p, int damage);
@@ -28,4 +27,4 @@ public interface GameWorld {
 	boolean addGameObject(GameObject gameObject);
 	
 	void pushAction(GameAction gameAction);
-	}
+}
