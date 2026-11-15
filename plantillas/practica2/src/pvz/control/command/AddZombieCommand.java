@@ -83,11 +83,14 @@ public class AddZombieCommand extends Command {
 		else if (!gm.isInsideBoard(pos) || !gm.isEmpty(pos)) {
 			gv.showError(Messages.INVALID_POSITION);
 		}
-		else {
-			if (gm.addGameObjectForFree(this.zombieName, pos)) {
-				gm.update();
-				gv.showGame();
-			}
+		else if (gm.addGameObjectForFree(this.zombieName, pos)) {
+			gm.update();
+			gv.showGame();
 		}
+		else {
+			gv.showError(Messages.INVALID_POSITION);//3.3
+		}
+	
 	}
+	
 }
