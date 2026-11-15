@@ -29,8 +29,13 @@ public class Peashooter extends Plant{
 	@Override
 	 public void update() {
 		 if (isAlive()) {
-			 // Position nextPos = position.right();
-			 game.plantAttack(position, DAMAGE);
+			 Position attackPosition = position;
+			 boolean attacked= false;
+			 
+			 while(!attacked && game.isInsideBoard(attackPosition)) {
+				 attacked = game.plantAttack(attackPosition, DAMAGE);
+				 attackPosition = attackPosition.right();
+			 }
 		 }
 	 }
 	

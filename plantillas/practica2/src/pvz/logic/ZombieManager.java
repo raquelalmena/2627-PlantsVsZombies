@@ -59,7 +59,7 @@ public class ZombieManager {
 	}
 
 	public void addZombie(int row, String zombieName) {
-		if (shouldAddZombie() && remainingZombies > 0) {
+		if (remainingZombies > 0 && shouldAddZombie()) {
 			Position spawnPos = new Position(row, GameWorld.NUM_COLS);
 			
 			Zombie newZombie = ZombieFactory.spawnZombie(zombieName, game, spawnPos);

@@ -105,17 +105,14 @@ public class GameObjectContainer {
 	
 	public boolean plantAttack(Position p, int damage) {
 		boolean attacked = false;
-		int col = p.column();
+		int pos = 0;
 		
-		while (!attacked && col < GameWorld.NUM_COLS) {
-			Position nextPos = new Position(p.row(), col);
-			for (int i = 0; i < gameObjects.size(); i++) {
-				GameObject gameObject= gameObjects.get(i);
-				if (!attacked && gameObject.isAlive() && gameObject.isInPosition(nextPos)) {
-					attacked = gameObject.receivePlantAttack(damage);
-				}
+		while (!attacked && pos < gameObjects.size()) {
+			GameObject gameObject= gameObjects.get(pos);
+			if (gameObject.isAlive() && gameObject.isInPosition(p)) {
+				attacked = gameObject.receivePlantAttack(damage);
 			}
-			col++;
+			pos++;
 			
 		}
 		
