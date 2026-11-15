@@ -23,7 +23,7 @@ public class Sunflower extends Plant{
 	
 	@Override
 	public void update() {
-		if (isAlive()) {
+		if (isAlive()) {//si llega a period genera 1 sol
 			if (cycles == PERIOD) {
 				game.generateSun();
 				cycles = 0;

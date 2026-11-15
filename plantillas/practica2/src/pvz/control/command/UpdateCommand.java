@@ -4,6 +4,8 @@ import pvz.logic.GameModel;
 import pvz.view.GameView; 
 import pvz.view.Messages;
 
+//avanza 1 ciclo
+
 public class UpdateCommand extends Command {
 	private String errorMessage;
 	
@@ -23,7 +25,7 @@ public class UpdateCommand extends Command {
 	
 	@Override
 	public Command create(String[] c) {
-		if (c.length != 1) {
+		if (c.length != 1) {//no hay parametros , solo puede ser 1
 			return new UpdateCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 		}
 		return this;
@@ -31,7 +33,7 @@ public class UpdateCommand extends Command {
 	
 	@Override
 	public void execute(GameModel gm, GameView gv) {
-		if (errorMessage != null) {
+		if (errorMessage != null) {//si hay error, lo enseña y termina, no avanza ciclo
 			gv.showError(errorMessage);
 			return;
 		}

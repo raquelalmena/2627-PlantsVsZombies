@@ -37,6 +37,7 @@ public class ExplosiveZombie extends Zombie {
 	
 	@Override
 	public void onExit() {
+		//casillas a las que daña
 		Position[] positions = {
 				this.position.up(),
 				this.position.upRight(),
@@ -47,7 +48,7 @@ public class ExplosiveZombie extends Zombie {
 				this.position.downRight(),
 				this.position.downLeft()
 		};
-		super.onExit();
-		game.pushAction(new ExplosionAction(EXPLOSION_DAMAGE, false, positions));
+		super.onExit();//quta el zombie del juego
+		game.pushAction(new ExplosionAction(EXPLOSION_DAMAGE, false, positions));//añade la explosion
 	}
 }

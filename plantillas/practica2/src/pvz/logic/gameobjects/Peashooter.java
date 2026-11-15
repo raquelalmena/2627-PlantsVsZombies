@@ -23,6 +23,7 @@ public class Peashooter extends Plant{
 			 Position attackPosition = position;
 			 boolean attacked= false;
 			 
+			 //recorre las casilla de la dhca hasta que ataca o se acaba el atblero
 			 while(!attacked && game.isInsideBoard(attackPosition)) {
 				 attacked = game.plantAttack(attackPosition, DAMAGE);
 				 attackPosition = attackPosition.right();

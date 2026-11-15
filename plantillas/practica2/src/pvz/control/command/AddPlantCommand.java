@@ -1,20 +1,24 @@
 package pvz.control.command;
 import java.util.Scanner;
+
 import pvz.logic.GameModel;
 import pvz.view.GameView; 
 import pvz.view.Messages;
 import utils.Position;
+
+//este comadno permite añadir plantas pagando
+//hereda de Command 
 
 public class AddPlantCommand extends Command{//extends por la herencia de la superclase
 	private String plantName;
 	private int col;
 	private int row;
 	
-	private String errorMessage;
+	private String errorMessage;//guarda mensaje de error si comando esta mal ecrito
 	
-	//constructora sin parámetros . se usa para registrarlo en AVAILABlE_COMANDS
+	//constructora sin parámetros para AVAILABlE_COMANDS
 	public AddPlantCommand() {
-		super (//invoca a la constructora de Command (superclase)
+		super (//llama a la constructora de Command (superclase)
 				Messages.COMMAND_ADD_PLANT_NAME,
 				Messages.COMMAND_ADD_PLANT_SHORTCUT,
 				Messages.COMMAND_ADD_PLANT_DETAILS,
@@ -24,33 +28,31 @@ public class AddPlantCommand extends Command{//extends por la herencia de la sup
 	
 	//constructora con parámetros
 	private AddPlantCommand(String pN, int c, int r) {
-		// llamamos primero a la constructora sin parámetros para inicializar los atributos de Command
+		// llama primero a la constructora sin parámetros
 		this();
 		this.plantName = pN;
 		this.col = c;
 		this.row = r;
 	}
 	
-	private AddPlantCommand(String errorMessage) {
+	private AddPlantCommand(String errorMessage) {//llama a construct sin parám y guarga el mensaje de error
 		this();
 		this.errorMessage = errorMessage;
 	}
 	
-	//propuesta create sin scanner. 
-	//pq enunciado: *En el caso de que los argumentos introducidos por el usuario no sean válidos para el comando, 
-	//el método* *create(String[])* *devolverá un comando con un mensaje de error*
 
-	@Override //pq sobreescribimos el método create heredado de Command
+	@Override //sobreescribo el método create heredado de Command
 	public Command create(String[] c) { 
 		
-		if (c.length < 4) {
+		if (c.length < 4) {//menso de 4 parametros
 			return new AddPlantCommand(Messages.COMMAND_PARAMETERS_MISSING);
 		}
 		
-		if (c.length > 4) {
+		if (c.length > 4) {//sobran parametros
 			return new AddPlantCommand(Messages.INVALID_COMMAND);
 		}
 		
+		//repito como cheatplant
 		String pN = c[1];
 		
 		Scanner colScanner = new Scanner(c[2]);
@@ -73,7 +75,7 @@ public class AddPlantCommand extends Command{//extends por la herencia de la sup
 	
 	@Override
 	public void execute(GameModel gm, GameView gv) {
-		if (errorMessage != null) {
+		if (errorMessage != null) {//si hay mensaje de error, lo muestra y termina
 			gv.showError(errorMessage);
 			return;
 		}
@@ -81,20 +83,20 @@ public class AddPlantCommand extends Command{//extends por la herencia de la sup
 		
 		Position pos = new Position(row, col);
 	
-		//si los parámetros están mal escritos
+		//si name mal
 		if (!gm.validPlantName(this.plantName)) {
 			gv.showError(Messages.INVALID_GAME_OBJECT);
 		}
-		//casilla mal
+		//si casilla fuera u ocupafa
 		else if (!gm.isInsideBoard(pos) || !gm.isEmpty(pos)) {
 			gv.showError(Messages.INVALID_POSITION);
 		}
-		else {
+		else { //intenta añadir pagando
 			if (gm.addGameObject(this.plantName, pos)) {
                 gm.update();
                 gv.showGame();
             } 
-			else  {
+			else  {//no hay soles suficientes
 				gv.showError(Messages.NOT_ENOUGH_COINS);
 			}
 		}	

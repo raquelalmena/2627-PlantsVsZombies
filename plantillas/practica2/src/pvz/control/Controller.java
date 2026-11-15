@@ -6,15 +6,7 @@ import pvz.view.GamePrinter;
 import pvz.logic.GameModel;
 import pvz.view.GameView;
 
-/**
- * Input/output coordinator of the game (the C in MVC).
- *
- * <p>Owns the game loop: reads a line from stdin, parses it into a
- * command, validates parameters (plant type, position), delegates
- * state changes to {@link Game}, and triggers a board reprint via
- * {@link tp1.pvz.view.GameView>} when the cycle advances. It holds no game
- * state of its own; the source of truth is always {@link Game}.
- */
+
 public class Controller {
 	
 	

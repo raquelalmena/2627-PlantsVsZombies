@@ -52,7 +52,7 @@ public abstract class Zombie extends GameObject{
 	public void onEnter() {}
 	
 	@Override
-	public void onExit() {
+	public void onExit() {//si sale se cuenta como killed
 		game.zombieKilled();
 	}
 	

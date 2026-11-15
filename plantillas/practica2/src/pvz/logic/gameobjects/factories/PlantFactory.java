@@ -9,6 +9,8 @@ import pvz.logic.gameobjects.*;
 
 import utils.Position;
 
+//factory que crea las plantas y guarda las plantas disponibles
+
 public class PlantFactory {
 	//lista con una plantilla de cada planta disponible en el juego
 	private static final List<Plant> AVAILABLE_PLANTS = Arrays.asList(
@@ -24,6 +26,7 @@ public class PlantFactory {
 		int pos = 0;
 		Plant p = null;
 		
+		//recorre las disponibles hasta encontrar la que coincide
 		while (!found && pos < AVAILABLE_PLANTS.size()) {
 			p = AVAILABLE_PLANTS.get(pos);
 			if (p.getName().equalsIgnoreCase(plantName) || p.getSymbol().equalsIgnoreCase(plantName)) {
@@ -35,7 +38,7 @@ public class PlantFactory {
 		if(!found) {
 			p = null;
 		}
-		else {
+		else {//si la encuentra, crea una copia con = posicion y juego
 			p = p.copy(position, game);
 		}
 		
@@ -47,8 +50,7 @@ public class PlantFactory {
 		return Collections.unmodifiableList(AVAILABLE_PLANTS);
 	}
 	
-	
-	
+	//comprueba si el nombre o simbolo q escribe el player corresponde a una planta
 	public static boolean validPlantName(String plantName) {
 		if (plantName == null) return false;
 		Plant plant = null;

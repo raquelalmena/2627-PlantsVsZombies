@@ -42,7 +42,7 @@ public abstract class Plant extends GameObject{
 	}
 	 
 	 @Override
-	 public boolean isAlive() {
+	 public boolean isAlive() {//esat viva si le queda endurance
 		 return endurance > 0;
 	 }
 	 
@@ -71,7 +71,7 @@ public abstract class Plant extends GameObject{
 	 }
 	
 	 @Override
-	 public boolean receivePlantAttack(int damage) {
+	 public boolean receivePlantAttack(int damage) {//no recibe ataque de otra planta
 		 return false;
 	 }
 	 
@@ -83,7 +83,7 @@ public abstract class Plant extends GameObject{
 	 public abstract Plant copy(Position p, GameWorld gameWorld);
 	 
 	 @Override
-	 public boolean canShareCell() {
+	 public boolean canShareCell() {//nunca pueden compartir casilla las plantas
 		 return false;
 	 }
 	 
@@ -92,7 +92,7 @@ public abstract class Plant extends GameObject{
 		 return false;
 	 }
 	 
-	 protected void die() {
+	 protected void die() {//pone a 0 la enduracne para q la planta muera (cherrybomb)
 		 endurance = 0;
 	 }
 }

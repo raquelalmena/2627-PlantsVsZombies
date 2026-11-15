@@ -16,6 +16,7 @@ public class HelpCommand extends Command {
 		);
 	}
 	
+	//constructora para cuando hayerror
 	private HelpCommand(String errorMessage) {
 		this();
 		this.errorMessage = errorMessage;
@@ -23,6 +24,7 @@ public class HelpCommand extends Command {
 	
 	@Override
 	public Command create(String[] c) {
+		//help tmpco tiene parametros, solo puede ser 1
 	    if (c.length != 1) {
 	        return new HelpCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	    }
@@ -31,15 +33,16 @@ public class HelpCommand extends Command {
 	
 	@Override
 	public void execute(GameModel gm, GameView gv) { 
-		if (errorMessage != null) {
+		if (errorMessage != null) {//si hay error lo enseña y termina
 			gv.showError(errorMessage);
 			return;
 		}
 		
+		//stringbuilder par air guardando todo el texto de la aydua
 		StringBuilder helpText = new StringBuilder();
         helpText.append(Messages.HELP_AVAILABLE_COMMANDS);//añade la primera línea. 'título'
         
-        // Recorremos los comandos para construir la ayuda dinámica
+        //recorremos rodos los comandos y añade su descripicon y ayuda
         for (int i = 0; i < AVAILABLE_COMMANDS.size(); i++) {
         	      	
         	Command command = AVAILABLE_COMMANDS.get(i);
@@ -50,7 +53,7 @@ public class HelpCommand extends Command {
         	helpText.append(command.getHelp());
         }
         
-        gv.showMessage(helpText.toString());
+        gv.showMessage(helpText.toString());//enseña toda la ayuda
 	}
 
 }

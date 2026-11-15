@@ -5,6 +5,8 @@ import utils.Position;
 import pvz.logic.GameWorld;
 import pvz.view.Messages;
 
+//es mas rapido
+
 public class SportyZombie extends Zombie {
 	public static final int DAMAGE = 1;
 	public static final int ENDURANCE = 2;

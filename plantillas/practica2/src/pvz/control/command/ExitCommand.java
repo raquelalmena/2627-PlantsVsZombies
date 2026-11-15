@@ -23,6 +23,7 @@ public class ExitCommand extends Command{
 	
 	@Override
 	public Command create(String[] c) {
+		//exit no tiene paramteros, solo puede ser 1
 		if (c.length != 1) {
 			return new ExitCommand(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 		}
@@ -31,7 +32,7 @@ public class ExitCommand extends Command{
 
 	@Override
 	public void execute(GameModel gm, GameView gv) {//meto gv tb. polimorfismo
-		if (errorMessage != null) {
+		if (errorMessage != null) {//si error, lo enseña y termina, no sale del juego
 			gv.showError(errorMessage);
 			return;
 		}

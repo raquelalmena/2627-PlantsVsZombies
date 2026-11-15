@@ -37,15 +37,17 @@ public class ListPlantsCommand extends Command{
 
 	@Override
 	public void execute(GameModel gm, GameView gv) {//muestra descripción de las plantas pero no avanza ciclo
-		if (errorMessage != null) {
+		if (errorMessage != null) {//si hay error, lo enseña y termina
 			gv.showError(errorMessage);
 			return;
 		}
-		
+		//coge todas las plantas q se pueden usar
 		List<Plant> plants = PlantFactory.getAvailablePlants();
 		
+		//stringbuilder para ir guardándolas
 		StringBuilder plantDescriptions = new StringBuilder();
 		
+		//recorre las plantas y añade su descripcion
 		for (int i = 0; i < plants.size(); i++) {
 			if (i > 0) {
 				plantDescriptions.append(Messages.LINE_SEPARATOR);
@@ -56,6 +58,7 @@ public class ListPlantsCommand extends Command{
 		
 		plantDescriptions.append(Messages.LINE_SEPARATOR);
 		
+		//enseña todas las descripciones por pantalla
 		gv.showMessage(plantDescriptions.toString());
     }	
 	

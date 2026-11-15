@@ -4,6 +4,8 @@ import utils.Position;
 import pvz.logic.GameWorld;
 import pvz.view.Messages;
 
+//tiene mucha vida
+
 public class WallNut extends Plant {
 	public static final int COST = 50;
 	public static final int ENDURANCE = 10;
@@ -33,7 +35,7 @@ public class WallNut extends Plant {
 	}
 	
 	@Override
-	public void update() {
+	public void update() { //no hace nada aunque pasen los ciclos
 	}
 	
 	@Override

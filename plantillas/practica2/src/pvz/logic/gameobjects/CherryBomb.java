@@ -5,6 +5,8 @@ import pvz.logic.actions.ExplosionAction;
 import pvz.logic.GameWorld;
 import pvz.view.Messages;
 
+//cerezas q explotan. hacen daño alrededor
+
 public class CherryBomb extends Plant{
 	public static final int COST = 50;
 	public static final int ENDURANCE = 2;
@@ -22,6 +24,7 @@ public class CherryBomb extends Plant{
 	}
 	
 	@Override
+	//devuelve el simbolo en mayusc cuando va a explotar
 	public String getSymbol() {
 		if (cycles == EXPLOSION_CYCLES) {
 			return Messages.CHERRY_BOMB_SYMBOL.toUpperCase();
@@ -47,11 +50,13 @@ public class CherryBomb extends Plant{
 	}
 	
 	@Override
+	//cuando llega al explosion cycles, explota
 	public void update() {
 		if (isAlive()) {
 			cycles++;
 			
 			if (cycles == EXPLOSION_CYCLES + 1) {
+				//casillas a las que hace daño:
 				Position[] positions = {
 						this.position.up(),
 						this.position.upRight(),
@@ -63,8 +68,9 @@ public class CherryBomb extends Plant{
 						this.position.downLeft()
 				};
 				
+				//añade la accion de explotar y hace daño a las plantas de alrededor
 				game.pushAction(new ExplosionAction(EXPLOSION_DAMAGE,true, positions));
-				this.die();
+				this.die();//muere despues de explotar
 				cycles = 0;
 			}
 		}

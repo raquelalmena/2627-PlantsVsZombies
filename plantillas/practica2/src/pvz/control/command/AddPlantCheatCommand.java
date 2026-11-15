@@ -1,21 +1,23 @@
 package pvz.control.command;
 
-
-
-
 import pvz.logic.*;
 import java.util.Scanner;
 import pvz.view.*;
 import utils.Position;
 
+//este comand permite añadir una planta gratis
+//hereda de comand asi q se pone extends Command, para poder sobreescribir funciones de command
+
 public class AddPlantCheatCommand extends Command{
+	
 	private String plantName;
 	private int col;
 	private int row;
+	private String errorMessage; //guarda mensaje de error si comando esta mal ecrito
 	
-	private String errorMessage;
-	
+	//constructora sin parámetros para AVAILABLE_COMMANDS
 	public AddPlantCheatCommand() {
+		//super llama a la constructora de command (sperclase)
 		super (
 				Messages.COMMAND_CHEAT_PLANT_NAME,
 				Messages.COMMAND_CHEAT_PLANT_SHORTCUT,
@@ -24,70 +26,78 @@ public class AddPlantCheatCommand extends Command{
 		);
 	}
 	
+	//constructora con parámetros
 	private AddPlantCheatCommand(String pN, int c, int r) {
-		this();
+		this();//llama a la constrcutora sin parámetros
 		this.plantName = pN;
 		this.col = c;
 		this.row = r;
 	}
 	
+	//constructora para cuando hay un error
 	private AddPlantCheatCommand(String errorMessage) {
-		this();
-		this.errorMessage = errorMessage;
+		this(); //llama a la constructora sin parámetros para mantener name, shortcut, details y help del comando
+		this.errorMessage = errorMessage;//guarda el error
 	}
 	
 	
-	@Override
+	@Override //para sobreescribir funciones de la superclase 
 	public Command create(String[] c) {
-	    if (c.length < 4) {
+	    if (c.length < 4) { //faltan datos
+	    	//devuelve un nuevo objeto con el error missing parameters
 	    	return new AddPlantCheatCommand(Messages.COMMAND_PARAMETERS_MISSING);
 	    }
 	    
-	    if (c.length > 4) {
+	    if (c.length > 4) { //si hay mas de 4 es que sobran 
+	    	//devuelve un nuevo objeto con error invalid command
 	    	return new AddPlantCheatCommand(Messages.INVALID_COMMAND);
 	    }
 	    
 	    String pN = c[1];
 	    
-	    Scanner colScanner = new Scanner(c[2]);
-	    Scanner rowScanner = new Scanner(c[3]);
+	    Scanner colScanner = new Scanner(c[2]); //crea Scanner para leer col y lo guarda en colScanner
+	    Scanner rowScanner = new Scanner(c[3]); //igual con row
 	    
-	    if (!colScanner.hasNextInt() || !rowScanner.hasNextInt()) {
+	    if (!colScanner.hasNextInt() || !rowScanner.hasNextInt()) {//con hasNextInt comprueba si NO son enteros
 			colScanner.close();
 			rowScanner.close();
-			return new AddPlantCheatCommand(Messages.INVALID_COMMAND);
+			return new AddPlantCheatCommand(Messages.INVALID_COMMAND);//devuelve con error invalid command
 		}
 		
+	    //son enteros si no entra en el if,guardo esos valores en col y roww
 		int col = colScanner.nextInt();
 		int row = rowScanner.nextInt();
 		
 		colScanner.close();
 		rowScanner.close();
 		
+		//devuelve un nuevo addplantcheat con los 3 parametros correctoe
 		return new AddPlantCheatCommand(pN, col, row);
 	}
 	
 	
 	@Override
 	public void execute(GameModel gm, GameView gv) {
-		if (errorMessage != null) {
-			gv.showError(errorMessage);
+		if (errorMessage != null) { //si hay mensaje de error
+			gv.showError(errorMessage);//lo enseña y termina
 			return;
 		}
 		
 		Position pos = new Position(row, col);
-		//si los parámetros están mal escritos
+		//si el name esta mal
 		if (!gm.validPlantName(this.plantName)) {
 			gv.showError(Messages.INVALID_GAME_OBJECT);
 		}
-		//casilla mal
+		//si casilla mal (fuera del tablero u ocupada)
 		else if (!gm.isInsideBoard(pos) || !gm.isEmpty(pos)) {
 			gv.showError(Messages.INVALID_POSITION);
 		}
+		//si se puede añadir planta gratis
 		else if (gm.addGameObjectForFree(plantName, pos)) {
 			gm.update();
             gv.showGame();
 		}
+		//si no se pudo añadir 
 		else {
 			gv.showError(Messages.INVALID_POSITION);
 		}

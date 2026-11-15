@@ -37,9 +37,10 @@ public class ListZombiesCommand extends Command{
 			gv.showError(errorMessage);
 			return;
 		}
-		
+		//coge todos los zombies q se pueden usar
 		List<Zombie> zombies = ZombieFactory.getAvailableZombies();
 		
+		//va guardando con stringbuilder la descripcion de cada uno
 		StringBuilder zombiesDescriptions = new StringBuilder();
 		
 		for (int i = 0; i < zombies.size(); i++) {
@@ -50,8 +51,9 @@ public class ListZombiesCommand extends Command{
 			zombiesDescriptions.append(zombies.get(i).getDescription());
 		}
 		
-	zombiesDescriptions.append(Messages.LINE_SEPARATOR);
+		zombiesDescriptions.append(Messages.LINE_SEPARATOR);
 		
+		//enseña todas las descripciones
 		gv.showMessage(zombiesDescriptions.toString());
 	}
 }

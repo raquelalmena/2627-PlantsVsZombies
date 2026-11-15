@@ -1,6 +1,9 @@
 package pvz.logic.gameobjects;
 
 import pvz.logic.GameWorld;
+
+//aparece en el tablero
+
 import utils.Position;
 import pvz.view.Messages;
 
@@ -21,7 +24,7 @@ public class Sun extends GameObject {
 		return Messages.SUN_SYMBOL;
 	}
 	
-	@Override
+	@Override //devuelve el icono con el simbolo y los ciclos que le quedan
 	public String getIcon() {
 		return String.format(Messages.GAME_OBJECT_ICON, getSymbol(), endurance);
 	}
@@ -31,7 +34,7 @@ public class Sun extends GameObject {
 	}
 	
 	@Override
-	public boolean isAlive() {
+	public boolean isAlive() {//esta vivo mientras le quede endurance
 		return endurance > 0;
 	}
 	
@@ -52,23 +55,24 @@ public class Sun extends GameObject {
 	public void onExit() {}
 	
 	@Override
-	public void update() {
+	public void update() {//cada ciclo pierde uno, si llega a 0 desaparece
 		if (isAlive()) {
 			endurance--;
 		}
 	}
 	
 	@Override
-	public boolean canShareCell() {
+	public boolean canShareCell() {//el sol SÍ puede compartir casilla
 		return true;
 	}
 	
 	@Override
-	public boolean canBeSpawnedAt(Position p) {
+	public boolean canBeSpawnedAt(Position p) {//en cualquiera dentro del tablero
 		return game.isInsideBoard(p);
 	}
 	
 	@Override
+	//si el player lo coge da soles y desaparece
 	public boolean catchObject(Position p) {
 		if (isAlive() && isInPosition(p)) {
 			game.generateCoins(SUNCOINS);

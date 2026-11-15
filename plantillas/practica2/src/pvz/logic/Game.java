@@ -14,8 +14,6 @@ import pvz.logic.gameobjects.Zombie;
 import pvz.control.Level;
 
 
-// FALTA RANDOM
-
 public class Game implements GameStatus, GameWorld, GameModel {
 	public static final int INITIAL_COINS = 50;
 	
@@ -29,27 +27,26 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	private int caughtCoins;
 	private boolean caughtSun;
 	
-	private GameObjectContainer container;
+	private GameObjectContainer container;//guarda todos los objectos del tablero
 	private ZombiesManager zombieManager;
 	private SunsManager sunManager;
 	
 	private Deque<GameAction> actions;
 	
-	
+	//constructora con seed y level
 	public Game(long seed, Level level) {
 		this.seed = seed;
 		this.level = level;
 		reset();
 	}
-	
-	//TODO. Falta comentar lo que hace cada una auqnue sea obvio para que no nos penalice jeje:
-	
+		
 	@Override
 	public int getCycles() {
 		return numCycle;
 	}
 	
 	@Override
+	//reset con valores iniciales
     public void reset() {
 		numCycle  = 0;
 		suncoins = INITIAL_COINS;
@@ -66,6 +63,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
     }
 	
 	@Override
+	//reset con otro level y otra seed
 	public void reset(Level level, long seed) {
 		this.level = level;
 		this.seed = seed;
@@ -74,38 +72,33 @@ public class Game implements GameStatus, GameWorld, GameModel {
 
     @Override
     public void update() {
-    	// 1. Execute pending actions
+    	//primero las pending
     	executePendingActions();
     	
-    	// 2. Execute game Actions
-
-
+    	//luego game actions
         zombieManager.update();
     	sunManager.update();
 
-    	
-    	// 3. Game object updates
-
+    	//luego hace los updates
         container.update();
         
-        // 4. & 5. Remove dead and execute pending actions
+        //elimina muertos y pending
         boolean deadRemoved = true;
         while (deadRemoved || arePendingActionsLeft()) {
-        	// 4. Remove dead
         	deadRemoved = this.container.removeDead();
-        	
-        	// 5. execute pending actions
-        	executePendingActions();
+          	executePendingActions();
         }
         
         this.numCycle++;
         caughtSun = false;
     }
     
+    //guarda una accion para mas tarde
     public void pushAction(GameAction gameAction) {
     	  this.actions.addLast(gameAction);
 	}
 
+    //ejecuta todas las acciones pendientes
 	private void executePendingActions() {
 	  while (!this.actions.isEmpty()) {
 	    GameAction action = this.actions.removeFirst();
@@ -113,11 +106,13 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	  }
 	}
 
+	//si hay acciones pendientes
 	private boolean arePendingActionsLeft() {
 	  return !this.actions.isEmpty();
 	}
 
     @Override
+    //player sale del juego
     public void quit() {
         this.playerQuits = true;
     }
@@ -136,7 +131,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
             
 
     	}
-    	
+    	//comprueba si es zombi para añadir sin pagar
     	if (ZombieFactory.validZombieName(objectName)) {
     	        Zombie zombie = ZombieFactory.spawnZombie(objectName, this, p);
 
@@ -150,6 +145,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
     }
     
     @Override
+    //añade planta o zombie gratis. para cheat
     public boolean addGameObjectForFree(String objectName, Position p) {
     	// comprobamos si objectName coincide con alguno de los nombres de las plantas disponibles
         Plant plant = PlantFactory.spawnPlant(objectName, this, p);
@@ -261,7 +257,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
     }
     
     @Override
-    public Position randomPosition() {
+    public Position randomPosition() {//devuelve pos aleatoria
     	int randomRow = rand.nextInt(NUM_ROWS);
     	int randomCol = rand.nextInt(NUM_COLS);
     	
