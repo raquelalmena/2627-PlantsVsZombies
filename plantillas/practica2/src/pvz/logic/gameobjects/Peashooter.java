@@ -17,15 +17,6 @@ public class Peashooter extends Plant{
 		super(game, p, COST, ENDURANCE, DAMAGE);
 	}
 	
-	
-	@Override
-	public String getIcon() {
-	    String icon = Messages.EMPTY_STRING;
-	    if (isAlive()) icon = String.format(Messages.PEASHOOTER_ICON, getEndurance());
-	    else icon = String.format(Messages.PEASHOOTER_ICON, 0);
-	    return icon;
-	}
-	
 	@Override
 	 public void update() {
 		 if (isAlive()) {

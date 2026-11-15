@@ -10,10 +10,6 @@ public class Sun extends GameObject {
 	
 	private int endurance;
 	
-	public Sun() {
-		super();
-		this.endurance = ENDURANCE;
-	}
 	
 	public Sun(Position p, GameWorld game) {
 		super(game, p);
@@ -31,7 +27,7 @@ public class Sun extends GameObject {
 	}
 	
 	public String getDescription() {
-		return String.format(Messages.SUN_DESCRIPTION);
+		return Messages.SUN_DESCRIPTION;
 	}
 	
 	@Override

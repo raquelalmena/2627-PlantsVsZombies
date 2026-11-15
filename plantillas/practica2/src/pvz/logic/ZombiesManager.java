@@ -17,20 +17,21 @@ import utils.Position;
  * {@link ZombieList}, and answering win/loss queries
  *
  */
-public class ZombieManager {
+public class ZombiesManager {
 
 	private GameWorld game;
 	private Level level;
 	private Random rand;
 	private int remainingZombies;
-	private int zombiesKilled;
+	//private int zombiesKilled;
+	private int zombiesAlive;
 
-	public ZombieManager(Game game, Level level, Random rand) {
+	public ZombiesManager(GameWorld game, Level level, Random rand) {
 		this.game = game;
 		this.level = level;
 		this.rand = rand;
 		this.remainingZombies = level.getNumberOfZombies();
-		this.zombiesKilled = 0;
+		this.zombiesAlive = 0;
 	}
 
 	/**
@@ -58,7 +59,7 @@ public class ZombieManager {
 		addZombie(row, zombieName);
 	}
 
-	public void addZombie(int row, String zombieName) {
+	private void addZombie(int row, String zombieName) {
 		if (remainingZombies > 0 && shouldAddZombie()) {
 			Position spawnPos = new Position(row, GameWorld.NUM_COLS);
 			
@@ -67,6 +68,7 @@ public class ZombieManager {
 			// si se ha podido añadir el Zombie entonces restamos el número de zombies que faltan
 			if (newZombie != null && game.addGameObject(newZombie)) {
 				remainingZombies--;
+				zombiesAlive++;
 			}
 		}
 		
@@ -92,10 +94,14 @@ public class ZombieManager {
 	}
 	
 	public boolean allZombiesWereKilled() {
-		return zombiesKilled == level.getNumberOfZombies();
+		return zombiesAlive == 0 && remainingZombies == 0;
 	}
 	
 	public void zombieKilled() {
-		zombiesKilled++;
+		zombiesAlive--;
+	}
+	
+	public void zombieAdded() {
+		zombiesAlive++;
 	}
  }

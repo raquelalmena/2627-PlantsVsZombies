@@ -6,7 +6,7 @@ import utils.Position;
 
 public abstract class Plant extends GameObject{
 	 private int cost;
-	 protected int endurance;
+	 private int endurance;
 	 private int totalEndurance;
 	 private int damage;
 
@@ -90,5 +90,9 @@ public abstract class Plant extends GameObject{
 	 @Override
 	 public boolean catchObject(Position p) {
 		 return false;
+	 }
+	 
+	 protected void die() {
+		 endurance = 0;
 	 }
 }

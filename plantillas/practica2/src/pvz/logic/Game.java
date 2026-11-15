@@ -30,8 +30,8 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	private boolean caughtSun;
 	
 	private GameObjectContainer container;
-	private ZombieManager zombieManager;
-	private SunManager sunManager;
+	private ZombiesManager zombieManager;
+	private SunsManager sunManager;
 	
 	private Deque<GameAction> actions;
 	
@@ -39,22 +39,7 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	public Game(long seed, Level level) {
 		this.seed = seed;
 		this.level = level;
-		initGame();
-	}
-	
-	private void initGame() { //separo del cosntructor para usar en reset
-		numCycle  = 0;
-		suncoins = INITIAL_COINS;
-		playerQuits = false;
-		rand = new Random(seed);
-		container = new GameObjectContainer();
-		zombieManager = new ZombieManager(this, level, rand);
-		generatedCoins = 0;
-		caughtCoins = 0;
-		caughtSun = false;
-		sunManager = new SunManager(this);
-		
-		this.actions = new ArrayDeque<>();
+		reset();
 	}
 	
 	//TODO. Falta comentar lo que hace cada una auqnue sea obvio para que no nos penalice jeje:
@@ -66,15 +51,25 @@ public class Game implements GameStatus, GameWorld, GameModel {
 	
 	@Override
     public void reset() {
-        initGame();
-        
+		numCycle  = 0;
+		suncoins = INITIAL_COINS;
+		playerQuits = false;
+		rand = new Random(seed);
+		container = new GameObjectContainer();
+		zombieManager = new ZombiesManager(this, level, rand);
+		generatedCoins = 0;
+		caughtCoins = 0;
+		caughtSun = false;
+		sunManager = new SunsManager(this);
+		
+		this.actions = new ArrayDeque<>();        
     }
 	
 	@Override
 	public void reset(Level level, long seed) {
 		this.level = level;
 		this.seed = seed;
-		initGame();
+		reset();
 	}
 
     @Override
@@ -145,8 +140,9 @@ public class Game implements GameStatus, GameWorld, GameModel {
     	if (ZombieFactory.validZombieName(objectName)) {
     	        Zombie zombie = ZombieFactory.spawnZombie(objectName, this, p);
 
-    	        if (zombie != null) {
-    	            return addGameObject(zombie);
+    	        if (zombie != null && addGameObject(zombie)) {
+    	            zombieManager.zombieAdded();
+    	        	return true;
     	        }
     	}
     	

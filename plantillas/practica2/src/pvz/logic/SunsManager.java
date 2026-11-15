@@ -1,24 +1,24 @@
 package pvz.logic;
 
 
-public class SunManager {
-	private GameWorld game;
+public class SunsManager {
+	private final GameWorld game;
 	
 	public static final int FREQUENCY = 5;
 	
 	private int cycles;
 	
-	public SunManager(GameWorld game) {
+	public SunsManager(GameWorld game) {
 		this.game = game;
 		this.cycles = 0;
 	}
 	
 	public void update() {
-		cycles++;
-		
-		if (cycles == FREQUENCY + 1) {
+		if (cycles == FREQUENCY) {
 			game.generateSun();
-			cycles = 1;
+			cycles = 0;
 		}
+		
+		cycles++;
 	}
 }

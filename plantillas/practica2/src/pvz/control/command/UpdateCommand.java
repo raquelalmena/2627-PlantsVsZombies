@@ -39,11 +39,4 @@ public class UpdateCommand extends Command {
 		gm.update();//avanza un ciclo
 		gv.showGame();//muestra tablero
 	}
-
-	@Override
-	public boolean matchCommand(String c) {
-		boolean match = super.matchCommand(c);//llama al matchCommand de la clase Command y comprueba concidencia
-		if (!match && c != null) match = c.isEmpty();//si no hay coincidencia pero tampoco es nula, devuelve si la c es vacía
-		return match;
-	}
 }

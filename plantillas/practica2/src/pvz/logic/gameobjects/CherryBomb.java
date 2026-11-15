@@ -8,7 +8,6 @@ import pvz.view.Messages;
 public class CherryBomb extends Plant{
 	public static final int COST = 50;
 	public static final int ENDURANCE = 2;
-	public static final int DAMAGE = 0;
 	public static final int EXPLOSION_DAMAGE = 10;
 	public static final int EXPLOSION_CYCLES = 2;
 	
@@ -65,7 +64,7 @@ public class CherryBomb extends Plant{
 				};
 				
 				game.pushAction(new ExplosionAction(EXPLOSION_DAMAGE,true, positions));
-				endurance = 0;
+				this.die();
 				cycles = 0;
 			}
 		}
